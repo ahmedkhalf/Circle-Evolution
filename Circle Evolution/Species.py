@@ -22,12 +22,12 @@ class Helper:
 class Specie:
     def __init__(self, size):
         self.size = size
-        self.img = np.zeros(size)
         self.genotype = np.random.rand(150, 4)
+        self.phenotype = np.zeros(size)
 
     def addCircle(self, y, x, radius, adder):
         rr, cc = circle(y, x, radius, self.size)
-        self.img[rr, cc] += adder
+        self.phenotype[rr, cc] += adder
 
     def render(self):
         radiusAvg = (self.size[0] + self.size[1]) / 2 / 2
@@ -36,7 +36,7 @@ class Specie:
                            row[2] * radiusAvg, row[3])
 
     def getFitness(self, target):
-        return ss(self.img, target)
+        return ss(self.phenotype, target)
 
 
 s = Specie((64, 64))
