@@ -3,7 +3,6 @@ from skimage.draw import circle
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-import copy
 import cv2
 
 
@@ -22,69 +21,63 @@ class Helper:
 
 
 class Specie:
-    def __init__(self, size):
+    def __init__(self, size, genes=5, genotype=None):
         self.size = size
-        self.genotype = np.random.rand(150, 4)
+        if genotype:
+            self.genotype = genotype
+        else:
+            self.genotype = np.random.rand(genes, 4)
         self.phenotype = np.zeros(size)
 
-    def addCircle(self, y, x, radius, adder):
+    def _addCircle(self, y, x, radius, adder):
         rr, cc = circle(y, x, radius, self.size)
         self.phenotype[rr, cc] += adder
 
+    def addGene(self):
+        self.genotype = np.vstack(self.genotype, np.random.rand(4))
+
+    def genes(self):
+        # Returns number of genes
+        return self.genotype.shape[0]
+
     def render(self):
+        self.phenotype = np.zeros(self.size)
         radiusAvg = (self.size[0] + self.size[1]) / 2 / 2
         for row in self.genotype:
-            self.addCircle(row[0] * self.size[0], row[1] * self.size[1],
-                           row[2] * radiusAvg, row[3])
-
-    def getFitness(self, target):
-        return (np.square(self.phenotype - target)).mean(axis=None)
-        # return ss(self.phenotype, target)
+            self._addCircle(row[0] * self.size[0], row[1] * self.size[1],
+                            row[2] * radiusAvg, row[3])
 
 
 class Evolution:
-    def __init__(self, target, settings):
-        self.target = target
-        self.settings = settings
-        self.species = [Specie((64, 64)) for x in range(1)]
-        self.bestfit = 99999
-        self.evolution = 1
+    def __init__(self, settings):
+        self.size = settings["size"]  # Tuple (y, x)
+        self.target = settings["target"]  # Target image
+        self.specie = Specie(self.size)
+        self.bestfit = -99999
+        self.generation = 1
 
     def mutate(self, specie):
-        ns = copy.deepcopy(specie)
-        ra = np.random.rand(150, 4) < random.uniform(0.02, 0.3)
-        if random.random() > 0.5:
-            ns.genotype[ra] = np.random.rand(len(ns.genotype[ra]))
+        newSpecie = Specie(self.size, genotype=specie.genotype)
+
+        # Select random feature in random genes
+        ra = np.random.rand(newSpecie.genes(), 4) < random.uniform(0.02, 0.4)
+        # Get selection scope
+        scope = np.random.rand(len(newSpecie.genotype[ra]))
+
+        if random.random() < 0.25:
+            # 25% Complete replacement
+            newSpecie.genotype[ra] = scope
         else:
-            ns.genotype[ra] += (np.random.rand(len(ns.genotype[ra])) - 0.5) / 10
-        ns.genotype[ra] = np.clip(ns.genotype[ra], a_min=0, a_max=1)
-        return ns
+            # 75% Soft adition
+            newSpecie.genotype[ra] += (scope - 0.5) / random.randint(4, 12)
 
-    def evolve(self):
-        # Go to next generation
-        for specie in self.species:
-            specie.render()
-            fit = specie.getFitness(self.target)
-            if abs(fit) < self.bestfit:
-                print(self.evolution, '{0:.16f}'.format(fit))
-                self.bestfit = abs(fit)
+        newSpecie.genotype[ra] = np.clip(newSpecie.genotype[ra], 0, 1)
+        return newSpecie
 
-            specie.phenotype = np.zeros((64, 64))
-
-            ns = self.mutate(specie)
-            ns.render()
-            nfit = ns.getFitness(self.target)
-
-            if abs(nfit) < abs(fit):
-                self.species[0] = ns
-                self.species[0].phenotype = np.zeros((64, 64))
-        self.evolution += 1
-        if self.evolution % 10000 == 0:
-            np.savetxt('Checkpoints/' + str(self.evolution) + '.txt',
-                       self.species[0].genotype, fmt='%d')
-
-
-target = Helper.loadTargetImage("Images/Mona Lisa 64.jpg", (64, 64))
-e = Evolution(target, None)
-while True:
-    e.evolve()
+    def getFitness(self, target):
+        if self.maxError is None:
+            self.maxError = (np.square((1-(target >= 0.5)) - target)).mean(axis=None)
+        v1 = (np.square(self.phenotype - target)).mean(axis=None)
+        v1 = (self.maxError - v1) / self.maxError
+        v2 = ss(self.phenotype, target)
+        return (v1 + v2) / 2
