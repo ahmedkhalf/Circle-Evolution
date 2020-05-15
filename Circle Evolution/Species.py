@@ -23,7 +23,7 @@ class Helper:
 class Specie:
     def __init__(self, size, genes=5, genotype=None):
         self.size = size
-        if genotype:
+        if genotype is not None:
             self.genotype = genotype
         else:
             self.genotype = np.random.rand(genes, 4)
@@ -34,7 +34,7 @@ class Specie:
         self.phenotype[rr, cc] += adder
 
     def addGene(self):
-        self.genotype = np.vstack(self.genotype, np.random.rand(4))
+        self.genotype = np.vstack([self.genotype, np.random.rand(4)])
 
     def genes(self):
         # Returns number of genes
@@ -49,15 +49,18 @@ class Specie:
 
 
 class Evolution:
-    def __init__(self, settings):
-        self.size = settings["size"]  # Tuple (y, x)
-        self.target = settings["target"]  # Target image
+    def __init__(self, size, target, mseConstant=4):
+        self.size = size  # Tuple (y, x)
+        self.target = target  # Target image
         self.specie = Specie(self.size)
-        self.bestfit = -99999
+
+        self.maxError = (np.square((1-(self.target >= 0.5)) - self.target)).mean(axis=None)
+        self.mseConstant = mseConstant
+
         self.generation = 1
 
     def mutate(self, specie):
-        newSpecie = Specie(self.size, genotype=specie.genotype)
+        newSpecie = Specie(self.size, genotype=np.array(specie.genotype))
 
         # Select random feature in random genes
         ra = np.random.rand(newSpecie.genes(), 4) < random.uniform(0.02, 0.4)
@@ -74,10 +77,47 @@ class Evolution:
         newSpecie.genotype[ra] = np.clip(newSpecie.genotype[ra], 0, 1)
         return newSpecie
 
-    def getFitness(self, target):
-        if self.maxError is None:
-            self.maxError = (np.square((1-(target >= 0.5)) - target)).mean(axis=None)
-        v1 = (np.square(self.phenotype - target)).mean(axis=None)
+    def getFitness(self, specie):
+        # First apply mean squared error and map it values to max at 1
+        v1 = (np.square(specie.phenotype - self.target)).mean(axis=None)
+        v1 = v1 * self.mseConstant
         v1 = (self.maxError - v1) / self.maxError
-        v2 = ss(self.phenotype, target)
+        # Then apply structural similarity
+        v2 = ss(specie.phenotype, self.target)
         return (v1 + v2) / 2
+
+    def printProgress(self, fit):
+        print("GEN {}, FIT {:.6f}, GENES {}".format(self.generation, fit, self.specie.genes()))
+
+    def evolve(self, maxGenes=250, maxGeneration=100000,
+               improveLen=200, improveMin=0.05, saveFreq=10000):
+        improvement = []
+        for i in range(maxGeneration):
+            self.generation = i
+
+            self.specie.render()
+            fit = self.getFitness(self.specie)
+
+            mutated = self.mutate(self.specie)
+            mutated.render()
+            newfit = self.getFitness(mutated)
+
+            if newfit > fit:
+                self.specie = mutated
+                self.printProgress(newfit)
+                improvement.append(1)
+            else:
+                improvement.append(0)
+
+            if len(improvement) >= improveLen:
+                # TODO research this vs numpy (speed)
+                if sum(improvement) < improveMin:
+                    improvement = []
+                    self.specie.addGene()
+                else:
+                    improvement.pop(0)
+
+
+target = Helper.loadTargetImage("Images/Mona Lisa 128.jpg", (128, 128))
+e = Evolution((128, 128), target)
+e.evolve()
