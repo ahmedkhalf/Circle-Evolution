@@ -39,7 +39,7 @@ class Specie:
 
     def getFitness(self, target):
         return (np.square(self.phenotype - target)).mean(axis=None)
-        return ss(self.phenotype, target)
+        # return ss(self.phenotype, target)
 
 
 class Evolution:
@@ -47,14 +47,17 @@ class Evolution:
         self.target = target
         self.settings = settings
         self.species = [Specie((64, 64)) for x in range(1)]
+        self.bestfit = 99999
+        self.evolution = 1
 
     def mutate(self, specie):
         ns = copy.deepcopy(specie)
-        ra = np.random.rand(150, 4) < 0.1
+        ra = np.random.rand(150, 4) < random.uniform(0.02, 0.3)
         if random.random() > 0.5:
             ns.genotype[ra] = np.random.rand(len(ns.genotype[ra]))
         else:
-            ns.genotype[ra] += np.random.rand(len(ns.genotype[ra])) / 10
+            ns.genotype[ra] += (np.random.rand(len(ns.genotype[ra])) - 0.5) / 10
+        ns.genotype[ra] = np.clip(ns.genotype[ra], a_min=0, a_max=1)
         return ns
 
     def evolve(self):
@@ -62,9 +65,10 @@ class Evolution:
         for specie in self.species:
             specie.render()
             fit = specie.getFitness(self.target)
-            print('{0:.16f}'.format(fit))
-            if fit < 10:
-                Helper.showImage(specie.phenotype)
+            if abs(fit) < self.bestfit:
+                print(self.evolution, '{0:.16f}'.format(fit))
+                self.bestfit = abs(fit)
+
             specie.phenotype = np.zeros((64, 64))
 
             ns = self.mutate(specie)
@@ -74,6 +78,10 @@ class Evolution:
             if abs(nfit) < abs(fit):
                 self.species[0] = ns
                 self.species[0].phenotype = np.zeros((64, 64))
+        self.evolution += 1
+        if self.evolution % 10000 == 0:
+            np.savetxt('Checkpoints/' + str(self.evolution) + '.txt',
+                       self.species[0].genotype, fmt='%d')
 
 
 target = Helper.loadTargetImage("Images/Mona Lisa 64.jpg", (64, 64))
