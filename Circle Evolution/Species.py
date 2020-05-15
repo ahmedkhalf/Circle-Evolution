@@ -26,15 +26,15 @@ class Specie:
         if genotype is not None:
             self.genotype = genotype
         else:
-            self.genotype = np.random.rand(genes, 4)
+            self.genotype = np.random.rand(genes, 5)
         self.phenotype = np.zeros(size)
 
-    def _addCircle(self, y, x, radius, adder):
+    def _addCircle(self, y, x, radius, color, transparency):
         rr, cc = circle(y, x, radius, self.size)
-        self.phenotype[rr, cc] += adder
+        self.phenotype[rr, cc] = self.phenotype[rr, cc] * transparency + color
 
     def addGene(self):
-        self.genotype = np.vstack([self.genotype, np.random.rand(4)])
+        self.genotype = np.vstack([self.genotype, np.random.rand(5)])
 
     def genes(self):
         # Returns number of genes
@@ -45,14 +45,14 @@ class Specie:
         radiusAvg = (self.size[0] + self.size[1]) / 2 / 2
         for row in self.genotype:
             self._addCircle(row[0] * self.size[0], row[1] * self.size[1],
-                            row[2] * radiusAvg, row[3])
+                            row[2] * radiusAvg, row[3], row[4])
 
 
 class Evolution:
-    def __init__(self, size, target, mseConstant=4):
+    def __init__(self, size, target, genes=5, mseConstant=4):
         self.size = size  # Tuple (y, x)
         self.target = target  # Target image
-        self.specie = Specie(self.size)
+        self.specie = Specie(self.size, genes=genes)
 
         self.maxError = (np.square((1-(self.target >= 0.5)) - self.target)).mean(axis=None)
         self.mseConstant = mseConstant
@@ -63,7 +63,7 @@ class Evolution:
         newSpecie = Specie(self.size, genotype=np.array(specie.genotype))
 
         # Select random feature in random genes
-        ra = np.random.rand(newSpecie.genes(), 4) < random.uniform(0.02, 0.4)
+        ra = np.random.rand(newSpecie.genes(), 5) < random.uniform(0.02, 0.4)
         # Get selection scope
         scope = np.random.rand(len(newSpecie.genotype[ra]))
 
@@ -90,7 +90,7 @@ class Evolution:
         print("GEN {}, FIT {:.6f}, GENES {}".format(self.generation, fit, self.specie.genes()))
 
     def evolve(self, maxGenes=250, maxGeneration=100000,
-               improveLen=200, improveMin=0.05, saveFreq=10000):
+               improveLen=100, improveMin=0.025, saveFreq=10000):
         improvement = []
         for i in range(maxGeneration):
             self.generation = i
@@ -113,11 +113,17 @@ class Evolution:
                 # TODO research this vs numpy (speed)
                 if sum(improvement) < improveMin:
                     improvement = []
-                    self.specie.addGene()
+                    if self.specie.genes() < maxGenes:
+                        self.specie.addGene()
+                        if self.generation > 60000:
+                            self.specie.render()
+                            Helper.showImage(self.specie.phenotype)
                 else:
                     improvement.pop(0)
 
 
 target = Helper.loadTargetImage("Images/Mona Lisa 128.jpg", (128, 128))
-e = Evolution((128, 128), target)
-e.evolve()
+e = Evolution((128, 128), target, genes=150)
+e.evolve(maxGenes=150, maxGeneration=20000)
+e.specie.render()
+Helper.showImage(e.specie.phenotype)
