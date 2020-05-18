@@ -41,22 +41,19 @@ class Specie:
         return self.genotype.shape[0]
 
     def render(self):
-        self.phenotype = np.zeros(self.size)
-        radiusAvg = (self.size[0] + self.size[1]) / 2 / 2
+        self.phenotype[:, :] = 0
+        radiusAvg = (self.size[0] + self.size[1]) / 2 / 6
         for row in self.genotype:
             self._addCircle(row[0] * self.size[0], row[1] * self.size[1],
                             row[2] * radiusAvg, row[3], row[4])
 
 
 class Evolution:
-    def __init__(self, size, target, genes=5, mseConstant=4):
+    def __init__(self, size, target, genes=5):
         self.size = size  # Tuple (y, x)
         self.target = target  # Target image
         self.specie = Specie(self.size, genes=genes)
-
         self.maxError = (np.square((1-(self.target >= 0.5)) - self.target)).mean(axis=None)
-        self.mseConstant = mseConstant
-
         self.generation = 1
 
     def mutate(self, specie):
@@ -77,53 +74,39 @@ class Evolution:
         newSpecie.genotype[ra] = np.clip(newSpecie.genotype[ra], 0, 1)
         return newSpecie
 
-    def getFitness(self, specie):
+    def getMseFitness(self, specie):
         # First apply mean squared error and map it values to max at 1
-        v1 = (np.square(specie.phenotype - self.target)).mean(axis=None)
-        v1 = v1 * self.mseConstant
-        v1 = (self.maxError - v1) / self.maxError
-        # Then apply structural similarity
-        v2 = ss(specie.phenotype, self.target)
-        return (v1 + v2) / 2
+        fit = (np.square(specie.phenotype - self.target)).mean(axis=None)
+        fit = (self.maxError - fit) / self.maxError
+        return fit
+
+    def getSsFitness(self, specie):
+        fit = ss(specie.phenotype, self.target)
+        return fit
 
     def printProgress(self, fit):
-        print("GEN {}, FIT {:.6f}, GENES {}".format(self.generation, fit, self.specie.genes()))
+        print("GEN {}, FIT {:.6f}".format(self.generation, fit))
 
-    def evolve(self, maxGenes=250, maxGeneration=100000,
-               improveLen=100, improveMin=0.025, saveFreq=10000):
-        improvement = []
+    def evolve(self, maxGeneration=100000):
         for i in range(maxGeneration):
             self.generation = i
 
             self.specie.render()
-            fit = self.getFitness(self.specie)
+            fit = self.getMseFitness(self.specie)
 
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = self.getFitness(mutated)
+            newfit = self.getMseFitness(mutated)
 
             if newfit > fit:
                 self.specie = mutated
                 self.printProgress(newfit)
-                improvement.append(1)
-            else:
-                improvement.append(0)
-
-            if len(improvement) >= improveLen:
-                # TODO research this vs numpy (speed)
-                if sum(improvement) < improveMin:
-                    improvement = []
-                    if self.specie.genes() < maxGenes:
-                        self.specie.addGene()
-                        if self.generation > 60000:
-                            self.specie.render()
-                            Helper.showImage(self.specie.phenotype)
-                else:
-                    improvement.pop(0)
 
 
-target = Helper.loadTargetImage("Images/Mona Lisa 128.jpg", (128, 128))
-e = Evolution((128, 128), target, genes=150)
-e.evolve(maxGenes=150, maxGeneration=20000)
-e.specie.render()
-Helper.showImage(e.specie.phenotype)
+if __name__ == "__main__":
+    target = Helper.loadTargetImage("Images/Mona Lisa 128.jpg", (128, 128))
+    e = Evolution((128, 128), target, genes=150)
+    e.evolve(maxGeneration=100000)
+    e.specie.render()
+    Helper.showImage(e.specie.phenotype)
+    # 0.985634
