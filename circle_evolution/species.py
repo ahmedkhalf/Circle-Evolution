@@ -15,7 +15,7 @@ class Specie:
     def __init__(self, size, genes=5, genotype=None):
         """Inits Specie with given size."""
         self.size = size
-        self.genotype = genotype if genotype else np.random.rand(genes, 5)
+        self.genotype = genotype if genotype is not None else np.random.rand(genes, 5)
         self.phenotype = np.zeros(size)
 
     @property
