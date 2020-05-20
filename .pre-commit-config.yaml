@@ -12,4 +12,4 @@ repos:
     rev: 1.6.2
     hooks:
     -   id: bandit
-        args: [--verbose, -ll, --recursive, isolda]
+        args: [--verbose, -ll, --recursive, circle_evolution]
