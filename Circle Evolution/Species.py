@@ -10,13 +10,13 @@ class Helper:
     @staticmethod
     def loadTargetImage(directory, size):
         img = cv2.imread(directory)
-        target = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) / 255
+        target = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         target = cv2.resize(target, size, interpolation=cv2.INTER_AREA)
         return target
 
     @staticmethod
     def showImage(arr):
-        plt.imshow(arr, cmap='gray', vmin=0, vmax=1)
+        plt.imshow(arr, cmap='gray', vmin=0, vmax=255)
         plt.show()
 
 
@@ -33,9 +33,6 @@ class Specie:
         rr, cc = circle(y, x, radius, self.size)
         self.phenotype[rr, cc] = self.phenotype[rr, cc] * transparency + color
 
-    def addGene(self):
-        self.genotype = np.vstack([self.genotype, np.random.rand(5)])
-
     def genes(self):
         # Returns number of genes
         return self.genotype.shape[0]
@@ -44,8 +41,14 @@ class Specie:
         self.phenotype[:, :] = 0
         radiusAvg = (self.size[0] + self.size[1]) / 2 / 6
         for row in self.genotype:
-            self._addCircle(row[0] * self.size[0], row[1] * self.size[1],
-                            row[2] * radiusAvg, row[3], row[4])
+            overlay = self.phenotype.copy()
+            cv2.circle(overlay, (int(row[1] * self.size[1]),
+                       int(row[0] * self.size[0])), int(row[2] * radiusAvg),
+                       (int(row[3]*255)), -1)
+
+            alpha = row[4]
+
+            self.phenotype = cv2.addWeighted(overlay, alpha, self.phenotype, 1 - alpha, 0)
 
 
 class Evolution:
@@ -53,25 +56,30 @@ class Evolution:
         self.size = size  # Tuple (y, x)
         self.target = target  # Target image
         self.specie = Specie(self.size, genes=genes)
-        self.maxError = (np.square((1-(self.target >= 0.5)) - self.target)).mean(axis=None)
+        self.maxError = (np.square((1-(self.target >= 127)) * 255 - self.target)).mean(axis=None)
         self.generation = 1
+        self.genes = genes
 
     def mutate(self, specie):
         newSpecie = Specie(self.size, genotype=np.array(specie.genotype))
 
-        # Select random feature in random genes
-        ra = np.random.rand(newSpecie.genes(), 5) < random.uniform(0.02, 0.4)
-        # Get selection scope
-        scope = np.random.rand(len(newSpecie.genotype[ra]))
+        y = random.randint(0, self.genes - 1)
+        change = random.randint(0, 6)
+        if change >= 6:
+            change -= 1
+            i, j = y, random.randint(0, self.genes - 1)
+            i, j, s = (i, j, -1) if i < j else (j, i, 1)
+            newSpecie.genotype[i:j+1] = np.roll(newSpecie.genotype[i:j+1], shift=s, axis=0)
+            y = j
+
+        selection = np.random.choice(5, size=change, replace=False)
 
         if random.random() < 0.25:
-            # 25% Complete replacement
-            newSpecie.genotype[ra] = scope
+            newSpecie.genotype[y, selection] = np.random.rand(len(selection))
         else:
-            # 75% Soft adition
-            newSpecie.genotype[ra] += (scope - 0.5) / random.randint(4, 12)
+            newSpecie.genotype[y, selection] += (np.random.rand(len(selection)) - 0.5) / 3
+            newSpecie.genotype[y, selection] = np.clip(newSpecie.genotype[y, selection], 0, 1)
 
-        newSpecie.genotype[ra] = np.clip(newSpecie.genotype[ra], 0, 1)
         return newSpecie
 
     def getMseFitness(self, specie):
@@ -85,7 +93,7 @@ class Evolution:
         return fit
 
     def printProgress(self, fit):
-        print("GEN {}, FIT {:.6f}".format(self.generation, fit))
+        print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
     def evolve(self, maxGeneration=100000):
         for i in range(maxGeneration):
@@ -104,9 +112,10 @@ class Evolution:
 
 
 if __name__ == "__main__":
-    target = Helper.loadTargetImage("Images/Mona Lisa 128.jpg", (128, 128))
-    e = Evolution((128, 128), target, genes=150)
-    e.evolve(maxGeneration=100000)
+    target = Helper.loadTargetImage("Images/Mona Lisa 256.jpg", (128, 128))
+    e = Evolution((128, 128), target, genes=256)
+    e.evolve(maxGeneration=500000)
     e.specie.render()
     Helper.showImage(e.specie.phenotype)
+    np.savetxt('Checkpoints/' + str(e.generation) + '.txt', e.specie.genotype)
     # 0.985634
