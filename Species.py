@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import cv2
+from multiprocessing import Pool
 
 
 class Helper:
@@ -16,6 +17,7 @@ class Helper:
 
     @staticmethod
     def showImage(arr):
+        plt.figure()
         plt.imshow(arr, cmap='gray', vmin=0, vmax=255)
         plt.show()
 
@@ -95,26 +97,46 @@ class Evolution:
     def printProgress(self, fit):
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
-    def evolve(self, maxGeneration=100000):
+    def evolve(self, maxGeneration=100000, offspring=1):
+        best = None
+        pool = Pool(16)
         for i in range(maxGeneration):
+            
             self.generation = i
-
             self.specie.render()
             fit = self.getMseFitness(self.specie)
+                
+            mutants = [self.mutate(self.specie) for i in range(offspring)]
+            inputs = [(m, self.target, score) for m in mutants]
+            fits = pool.starmap(eval_mutant, inputs)
+            topfit = max(fits)
 
-            mutated = self.mutate(self.specie)
-            mutated.render()
-            newfit = self.getMseFitness(mutated)
-
-            if newfit > fit:
-                self.specie = mutated
-                self.printProgress(newfit)
-
+            if best is None or topfit > best:
+                best = topfit
+                i = fits.index(topfit)
+                self.specie = mutants[i]
+                self.printProgress(best)
+                
+def score(mutant, target):
+    #This function can be modified arbitrarily to any desired scoring metric
+    maxError = (np.square((1-(target >= 127)) * 255 - target)).mean(axis=None)
+    fit = (np.square(mutant.phenotype - target)).mean(axis=None)
+    fit = (maxError - fit) / maxError
+    return fit
+                
+def eval_mutant(mutant, target, score_function):
+    mutant.render()
+    return score_function(mutant, target)
 
 if __name__ == "__main__":
-    target = Helper.loadTargetImage("Images/Mona Lisa 256.jpg", (128, 128))
-    e = Evolution((128, 128), target, genes=256)
-    e.evolve(maxGeneration=500000)
+    import time
+    ti = time.time()
+    target = Helper.loadTargetImage(r"Images\Mona Lisa 256.jpg", (256, 256))
+#    Helper.showImage(target)
+    e = Evolution((256, 256), target, genes=256)
+    e.evolve(maxGeneration=200, offspring=50)
+    dt = time.time() - ti
+    print('Finished in %d seconds.'%(dt))
     e.specie.render()
     Helper.showImage(e.specie.phenotype)
     np.savetxt('Checkpoints/' + str(e.generation) + '.txt', e.specie.genotype)
