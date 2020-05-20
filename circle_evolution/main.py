@@ -12,16 +12,15 @@ def main():
     parser = argparse.ArgumentParser(description="Circle Evolution CLI")
 
     parser.add_argument("image", type=str, help="Image to be processed")
-    parser.add_argument(
-        "size", choices=[(128, 128), (256, 256), (64, 64)], default=(128, 128), help="Dimension of the image"
-    )
+    size_options = {1: (64, 64), 2: (128, 128), 3: (256, 256)}
+    parser.add_argument("size", choices=size_options.keys(), default=2, help="Dimension of the image")
     parser.add_argument("--genes", default=256, type=int, help="Number of genes")
     parser.add_argument("--max-generations", type=int, default=500000)
     args = parser.parse_args()
 
-    target = helpers.load_target_image(args.image, args.size)
+    target = helpers.load_target_image(args.image, size_options[args.size])
 
-    evolution = Evolution(args.size, target, genes=args.genes)
+    evolution = Evolution(size_options[args.size], target, genes=args.genes)
     evolution.evolve(max_generation=args.max_generation)
 
     evolution.specie.render()
