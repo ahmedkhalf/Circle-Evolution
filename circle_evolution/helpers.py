@@ -41,6 +41,5 @@ def show_image(img_arr):
     """
     plt.figure()
     plt.axis("off")
-    plt.figure()
     plt.imshow(img_arr, cmap="gray", vmin=0, vmax=255)
     plt.show()
