@@ -1,0 +1,18 @@
+# Based on https://www.python.org/dev/peps/pep-0518/
+
+[build-system]
+  # Minimum requirements for the build system to execute.
+  requires = ["setuptools", "wheel"]  # PEP 508 specifications.
+
+[tool.black]
+  line-length = 120
+  exclude = '''
+/(
+    \.git
+  | \.venv
+  | buck-out
+  | build
+  | dist
+  | .egg
+)/
+'''
