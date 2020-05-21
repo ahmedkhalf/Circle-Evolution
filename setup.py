@@ -14,12 +14,7 @@ with open("circle_evolution/__init__.py", "rt", encoding="utf8") as f:
     version = str(packaging.version.Version(version))
 
 # Library dependencies
-INSTALL_REQUIRES = [
-    "opencv-python==4.2.0.34",
-    "numpy==1.18.4",
-    "matplotlib==3.2.1",
-    "scikit-image==0.17.2"
-]
+INSTALL_REQUIRES = ["opencv-python==4.2.0.34", "numpy==1.18.4", "matplotlib==3.2.1", "scikit-image==0.17.2"]
 
 # Testing dependencies
 TEST_REQUIRES = [
@@ -41,13 +36,10 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     setup_requires=["wheel"],
-    entry_points={
-        "console_scripts": ["circle_evolution=circle_evolution.main:main"]
-    },
+    entry_points={"console_scripts": ["circle_evolution=circle_evolution.main:main"]},
     install_requires=INSTALL_REQUIRES,
     extras_require={"test": TEST_REQUIRES},
     classifiers=[
-        "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "Intended Audience :: Data Scientists",
         "Programming Language :: Python",
