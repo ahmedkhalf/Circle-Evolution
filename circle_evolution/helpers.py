@@ -39,5 +39,7 @@ def show_image(img_arr):
     Arguments:
         img_arr: image array to be displayed
     """
+    plt.figure()
+    plt.axis("off")
     plt.imshow(img_arr, cmap="gray", vmin=0, vmax=255)
     plt.show()
