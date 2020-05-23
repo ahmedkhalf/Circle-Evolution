@@ -53,18 +53,6 @@ class Evolution:
 
         return new_specie
 
-    def get_mse_fitness(self, specie):
-        """Calculates MSE Fitness for a specie"""
-        # First apply mean squared error and map it values to max at 1
-        fit = (np.square(specie.phenotype - self.target)).mean(axis=None)
-        fit = (self.max_error - fit) / self.max_error
-        return fit
-
-    def get_ss_fitness(self, specie):
-        """Calculates SS Fitness for a specie"""
-        fit = ss(specie.phenotype, self.target)
-        return fit
-
     def print_progress(self, fit):
         """Progress of Evolution - Current iterations"""
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
