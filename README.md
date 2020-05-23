@@ -25,8 +25,9 @@ Evolutionary Art Using Circles
 ## Installation
 
 Clone or download this repository then run this command in the root folder
-
-    python setup.py install
+```bash
+python setup.py install
+```
 
 ## Usage
 ### Command Line
@@ -34,9 +35,9 @@ Clone or download this repository then run this command in the root folder
 You can easily start training an image by calling circle_evolution from your terminal
 
 **Example:**
-
-    circle_evolution "Mona Lisa 64.jpg" --size 1 --genes 256 --max-generations 50000
-
+```bash
+circle_evolution "Mona Lisa 64.jpg" --size 1 --genes 256 --max-generations 50000
+```
 
 | Parameter         | Description                                                          |
 | ----------------- | -------------------------------------------------------------------- |
@@ -44,9 +45,27 @@ You can easily start training an image by calling circle_evolution from your ter
 | --genes           | Number of circle to fit. *Default: 256*                              |
 | --max-generations | Number of generations to run. *Default: 500,000*                     |
 
-### Python Script
+### Python Example Script
 
-TODO: write python script usage
+```python
+from circle_evolution import evolution
+from circle_evolution import helpers
+import numpy as np
+import cv2
+
+target = helpers.load_target_image("Mona Lisa 64.jpg", size=(64, 64))
+e = evolution.Evolution((64, 64), target)
+
+e.evolve(max_generation=50000)
+
+helpers.show_image(e.specie.phenotype)
+
+np.savetxt(e.specie.genotype)
+cv2.imwrite("OuputImage.jpg", e.specie.phenotype)
+```
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 # Contributors
 
@@ -54,3 +73,4 @@ Ahmed Khalf
 [ahmedkhalf](http://github.com/ahmedkhalf)
 
 Guilherme de Amorim
+[guimorg](http://github.com/guimorg)
