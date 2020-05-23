@@ -6,6 +6,8 @@ from skimage.metrics import structural_similarity as ss
 
 from circle_evolution.species import Specie
 
+import circle_evolution.fitness as fitness
+
 
 class Evolution:
     """Logic for a Species Evolution.
@@ -67,19 +69,21 @@ class Evolution:
         """Progress of Evolution - Current iterations"""
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
-    def evolve(self, max_generation=100000):
+    def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
         """Genetic Algorithm for evolution"""
+        fitness = fitness(self.target)
+
+        self.specie.render()
+        fit = fitness.score(self.specie.phenotype)
+
         for i in range(max_generation):
             self.generation = i
 
-            self.specie.render()
-
-            fit = self.get_mse_fitness(self.specie)
-
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = self.get_mse_fitness(mutated)
+            newfit = fitness.score(mutated.phenotype)
 
             if newfit > fit:
+                fit = newfit
                 self.specie = mutated
                 self.print_progress(newfit)
