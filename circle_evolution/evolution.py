@@ -2,8 +2,6 @@ import random
 
 import numpy as np
 
-from skimage.metrics import structural_similarity as ss
-
 from circle_evolution.species import Specie
 
 import circle_evolution.fitness as fitness
