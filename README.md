@@ -63,11 +63,11 @@ helpers.show_image(e.specie.phenotype)
 np.savetxt(e.specie.genotype)
 cv2.imwrite("OuputImage.jpg", e.specie.phenotype)
 ```
-## Contributing
+# Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-# Contributors
+## Contributors
 
 Ahmed Khalf
 [ahmedkhalf](http://github.com/ahmedkhalf)
