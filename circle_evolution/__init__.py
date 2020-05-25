@@ -2,7 +2,7 @@
 # Welcome to Circle Evolution's Documentation
 
 <p>
-    <img alt="Circle Evolution Logo" src="../images/logo.png" width="400">
+    <img alt="Circle Evolution Logo" src="images/logo.png" width="400">
 </p>
 
 # Know your terminology
