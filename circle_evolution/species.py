@@ -25,7 +25,7 @@ class Specie:
 
     def __init__(self, size, genes=128, genotype=None):
         """Initializes Specie with given size.
-        
+
         Args:
             size (tuple): tuple containing height and width of generated image (h, w).
             genes (int): number of genes/circle in Specie. Dafaults to 128.
@@ -44,7 +44,8 @@ class Specie:
         """Renders image using the species definition.
 
         Performing the Evolution, this function renders the image for current
-        iteration given the genotype and phenotype.
+        iteration given the genotype. After render() is done executing, the
+        Specie phenotype it set to reflect latest changes in the genotype.
         """
         self.phenotype[:, :] = 0
         radius_avg = (self.size[0] + self.size[1]) / 2 / 6
