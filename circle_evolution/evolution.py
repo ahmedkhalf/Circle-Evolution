@@ -1,3 +1,5 @@
+"""Responsible for evolving a specie to look like target image."""
+
 import random
 
 import numpy as np
@@ -14,20 +16,20 @@ class Evolution:
     a target image.
 
     Attributes:
-        size (tuple): tuple containing height and width of target image (h, w)
-        target (np.array): target image for evolution
-        genes (int): the amount of circle to train the target image on
-        generation (int): amount of generations Evolution class has trained
-        specie (species.Specie): the Specie that is getting trained
+        size (tuple): tuple containing height and width of target image (h, w).
+        target (np.ndarray): target image for evolution.
+        genes (int): the amount of circle to train the target image on.
+        generation (int): amount of generations Evolution class has trained.
+        specie (species.Specie): the Specie that is getting trained.
     """
 
     def __init__(self, size, target, genes=5):
-        """Initializes Evolution class
+        """Initializes Evolution class.
 
         Args:
-            size (tuple): tuple containing height and width of target image (h, w)
-            target (np.array): target image for evolution
-            genes (int): the amount of circle to train the target image on
+            size (tuple): tuple containing height and width of target image (h, w).
+            target (np.ndarray): target image for evolution.
+            genes (int): the amount of circle to train the target image on.
         """
         self.size = size  # Tuple (y, x)
         self.target = target  # Target Image
@@ -37,13 +39,13 @@ class Evolution:
         self.specie = Specie(size=self.size, genes=genes)
 
     def mutate(self, specie):
-        """Mutates specie for evolution
+        """Mutates specie for evolution.
 
         Args:
-            specie (species.Specie): Specie to mutate
+            specie (species.Specie): Specie to mutate.
 
         Returns:
-            New Specie class, that has been mutated
+            New Specie class, that has been mutated.
         """
         new_specie = Specie(size=self.size, genotype=np.array(specie.genotype))
 
@@ -69,21 +71,21 @@ class Evolution:
         return new_specie
 
     def print_progress(self, fit):
-        """Prints progress of Evolution
+        """Prints progress of Evolution.
 
         Args:
-            fit (float): fitness value of specie
+            fit (float): fitness value of specie.
         """
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
-        """Genetic Algorithm for evolution
+        """Genetic Algorithm for evolution.
 
-        Call this function to begin evolving a Specie
+        Call this function to begin evolving a Specie.
 
         Args:
-            fitness (fitness.Fitness): fitness class to score species preformance
-            max_generation (int): amount of generations to train for
+            fitness (fitness.Fitness): fitness class to score species preformance.
+            max_generation (int): amount of generations to train for.
         """
         fitness = fitness(self.target)
 

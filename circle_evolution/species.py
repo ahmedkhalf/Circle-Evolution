@@ -29,7 +29,7 @@ class Specie:
         Args:
             size (tuple): tuple containing height and width of generated image (h, w).
             genes (int): number of genes/circle in Specie. Dafaults to 128.
-            genotype (np.ndarray): optional - initializes Specie with given genotype,
+            genotype (np.ndarray): optional - initializes Specie with given genotype.
         """
         self.size = size
         self.genotype = genotype if genotype is not None else np.random.rand(genes, 5)
