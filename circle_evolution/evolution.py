@@ -10,24 +10,41 @@ import circle_evolution.fitness as fitness
 class Evolution:
     """Logic for a Species Evolution.
 
+    Use the Evolution class when you want to train a Specie to look like
+    a target image.
+
     Attributes:
-        size:
-        target:
-        genes:
+        size (tuple): tuple containing height and width of target image (h, w)
+        target (np.array): target image for evolution
+        genes (int): the amount of circle to train the target image on
+        generation (int): amount of generations Evolution class has trained
+        specie (species.Specie): the Specie that is getting trained
     """
 
     def __init__(self, size, target, genes=5):
-        """Inits Evolution"""
+        """Initializes Evolution class
+
+        Args:
+            size (tuple): tuple containing height and width of target image (h, w)
+            target (np.array): target image for evolution
+            genes (int): the amount of circle to train the target image on
+        """
         self.size = size  # Tuple (y, x)
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
 
         self.specie = Specie(size=self.size, genes=genes)
-        self.max_error = (np.square((1 - (self.target >= 127)) * 255 - self.target)).mean(axis=None)
 
     def mutate(self, specie):
-        """Mutates specie for evolution"""
+        """Mutates specie for evolution
+
+        Args:
+            specie (species.Specie): Specie to mutate
+
+        Returns:
+            New Specie class, that has been mutated
+        """
         new_specie = Specie(size=self.size, genotype=np.array(specie.genotype))
 
         # Randomization for Evolution
@@ -52,18 +69,29 @@ class Evolution:
         return new_specie
 
     def print_progress(self, fit):
-        """Progress of Evolution - Current iterations"""
+        """Prints progress of Evolution
+
+        Args:
+            fit (float): fitness value of specie
+        """
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
-        """Genetic Algorithm for evolution"""
+        """Genetic Algorithm for evolution
+
+        Call this function to begin evolving a Specie
+
+        Args:
+            fitness (fitness.Fitness): fitness class to score species preformance
+            max_generation (int): amount of generations to train for
+        """
         fitness = fitness(self.target)
 
         self.specie.render()
         fit = fitness.score(self.specie.phenotype)
 
         for i in range(max_generation):
-            self.generation = i
+            self.generation = i + 1
 
             mutated = self.mutate(self.specie)
             mutated.render()
