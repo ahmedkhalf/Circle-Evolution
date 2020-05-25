@@ -1,3 +1,10 @@
+"""Fitness functions responsible for quantifying a specie's performance.
+
+You can make your own fitness functions or use the avaible one's. For
+example on making your own fitness functions, please check the available
+functions in the source code.
+"""
+
 import numpy as np
 
 from skimage.metrics import structural_similarity as ss
@@ -6,19 +13,26 @@ from skimage.metrics import structural_similarity as ss
 class Fitness:
     """Base fitness class
 
+    The Fitness class is responsible for scoring species. You can
+    make your own fitness classes by deriving from this base class.
+
     Attributes:
-        target: target image array
+        target (np.array): target image array
     """
 
     def __init__(self, target):
-        """Init Fitness Class"""
+        """Initialzes Fitness Class
+
+        Args:
+            target (np.array): target image array
+        """
         self.target = target
 
     def score(self, phenotype):
         """Score a Specie
 
         Args:
-            phenotype: specie image array
+            phenotype (np.array): specie image array
 
         Returns:
             float value, bigger number means better performance
