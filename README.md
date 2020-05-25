@@ -1,6 +1,6 @@
 <p align="center">
     <br>
-    <img src="https://user-images.githubusercontent.com/36672196/82636922-c369ef00-9c14-11ea-918e-bdf331990218.png" width="400"/>
+    <img src="docs/images/logo.png" width="500"/>
     <br>
 <p>
 <p align="center">
@@ -60,7 +60,7 @@ e.evolve(max_generation=50000)
 
 helpers.show_image(e.specie.phenotype)
 
-np.savetxt(e.specie.genotype)
+np.savetxt("Checkpoint.txt", e.specie.genotype)
 cv2.imwrite("OuputImage.jpg", e.specie.phenotype)
 ```
 # Contributing
