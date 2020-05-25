@@ -14,7 +14,7 @@ def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
 
     Args:
         image_path (str): path to load the image.
-        color: optional variable for colorspace conversion
+        color: optional variable for colorspace conversion.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
