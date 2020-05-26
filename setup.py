@@ -44,7 +44,7 @@ setup(
     extras_require={"test": TEST_REQUIRES},
     classifiers=[
         "Intended Audience :: Developers",
-        "Intended Audience :: Data Scientists",
+        "Intended Audience :: Science/Research",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
