@@ -1,3 +1,5 @@
+"""CLI interface for Circle Evolution"""
+
 import argparse
 
 import numpy as np

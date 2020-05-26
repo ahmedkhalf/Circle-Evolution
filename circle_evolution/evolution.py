@@ -1,33 +1,52 @@
+"""Responsible for evolving a specie to look like target image."""
+
 import random
 
 import numpy as np
 
-from skimage.metrics import structural_similarity as ss
-
 from circle_evolution.species import Specie
+
+import circle_evolution.fitness as fitness
 
 
 class Evolution:
     """Logic for a Species Evolution.
 
+    Use the Evolution class when you want to train a Specie to look like
+    a target image.
+
     Attributes:
-        size:
-        target:
-        genes:
+        size (tuple): tuple containing height and width of target image (h, w).
+        target (np.ndarray): target image for evolution.
+        genes (int): the amount of circle to train the target image on.
+        generation (int): amount of generations Evolution class has trained.
+        specie (species.Specie): the Specie that is getting trained.
     """
 
     def __init__(self, size, target, genes=5):
-        """Inits Evolution"""
+        """Initializes Evolution class.
+
+        Args:
+            size (tuple): tuple containing height and width of target image (h, w).
+            target (np.ndarray): target image for evolution.
+            genes (int): the amount of circle to train the target image on.
+        """
         self.size = size  # Tuple (y, x)
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
 
         self.specie = Specie(size=self.size, genes=genes)
-        self.max_error = (np.square((1 - (self.target >= 127)) * 255 - self.target)).mean(axis=None)
 
     def mutate(self, specie):
-        """Mutates specie for evolution"""
+        """Mutates specie for evolution.
+
+        Args:
+            specie (species.Specie): Specie to mutate.
+
+        Returns:
+            New Specie class, that has been mutated.
+        """
         new_specie = Specie(size=self.size, genotype=np.array(specie.genotype))
 
         # Randomization for Evolution
@@ -51,35 +70,36 @@ class Evolution:
 
         return new_specie
 
-    def get_mse_fitness(self, specie):
-        """Calculates MSE Fitness for a specie"""
-        # First apply mean squared error and map it values to max at 1
-        fit = (np.square(specie.phenotype - self.target)).mean(axis=None)
-        fit = (self.max_error - fit) / self.max_error
-        return fit
-
-    def get_ss_fitness(self, specie):
-        """Calculates SS Fitness for a specie"""
-        fit = ss(specie.phenotype, self.target)
-        return fit
-
     def print_progress(self, fit):
-        """Progress of Evolution - Current iterations"""
+        """Prints progress of Evolution.
+
+        Args:
+            fit (float): fitness value of specie.
+        """
         print("GEN {}, FIT {:.8f}".format(self.generation, fit))
 
-    def evolve(self, max_generation=100000):
-        """Genetic Algorithm for evolution"""
+    def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
+        """Genetic Algorithm for evolution.
+
+        Call this function to begin evolving a Specie.
+
+        Args:
+            fitness (fitness.Fitness): fitness class to score species preformance.
+            max_generation (int): amount of generations to train for.
+        """
+        fitness = fitness(self.target)
+
+        self.specie.render()
+        fit = fitness.score(self.specie.phenotype)
+
         for i in range(max_generation):
-            self.generation = i
-
-            self.specie.render()
-
-            fit = self.get_mse_fitness(self.specie)
+            self.generation = i + 1
 
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = self.get_mse_fitness(mutated)
+            newfit = fitness.score(mutated.phenotype)
 
             if newfit > fit:
+                fit = newfit
                 self.specie = mutated
                 self.print_progress(newfit)

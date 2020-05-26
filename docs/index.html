@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>circle_evolution API documentation</title>
+<meta name="description" content="Welcome to Circle Evolution&#39;s Documentation …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>circle_evolution</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="welcome-to-circle-evolutions-documentation">Welcome to Circle Evolution's Documentation</h1>
+<p>
+<img alt="Circle Evolution Logo" src="images/logo.png" width="400">
+</p>
+<h1 id="know-your-terminology">Know your terminology</h1>
+<p>A specie in Circle Evolution is the object we are optimizing.
+A specie has both a genotype and a phenotype.</p>
+<p>The specie's genotype tells the renderer how the circles should be rendered.</p>
+<p>The specie's phenotype is the rendered image itself.</p>
+<h1 id="getting-started">Getting Started</h1>
+<h2 id="installation">Installation</h2>
+<p>Clone or download this repository then run this command in the root folder</p>
+<pre><code class="bash">python setup.py install
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="command-line">Command Line</h3>
+<p>You can easily start training an image by calling circle_evolution from your terminal</p>
+<p><strong>Example:</strong></p>
+<pre><code class="bash">circle_evolution &quot;Mona Lisa 64.jpg&quot; --size 1 --genes 256 --max-generations 50000
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ndash;size</td>
+<td 128_="128)," 1: 256_="256)" 2: 3: 64_="64)," _128_="(128," _256_="(256," _64_="(64,">Image size <em>Default: 2</em></td>
+</tr>
+<tr>
+<td>&ndash;genes</td>
+<td>Number of circle to fit. <em>Default: 256</em></td>
+</tr>
+<tr>
+<td>&ndash;max-generations</td>
+<td>Number of generations to run. <em>Default: 500,000</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="python-example-scripts">Python Example Scripts</h3>
+<p>This script is the equivalent of running the command mentioned above.</p>
+<pre><code class="python">from circle_evolution import evolution
+from circle_evolution import helpers
+import numpy as np
+import cv2
+
+# Load target image of size (64, 64)
+target = helpers.load_target_image(&quot;Mona Lisa 64.jpg&quot;, size=(64, 64))
+
+# Setup evolution
+e = evolution.Evolution((64, 64), target)
+
+# Evolve for 50k generations
+e.evolve(max_generation=50000)
+
+# Show evolved phenotype
+helpers.show_image(e.specie.phenotype)
+
+# Saves genotype to checkpoint
+np.savetxt(&quot;Checkpoint.txt&quot;, e.specie.genotype)
+
+# Saves phenotype
+cv2.imwrite(&quot;OuputImage.jpg&quot;, e.specie.phenotype)
+</code></pre>
+<p>Here is how to load and train further from a saved checkpoint.</p>
+<pre><code class="python">from circle_evolution import evolution
+from circle_evolution import helpers
+import numpy as np
+import cv2
+
+# Load target image of size (64, 64)
+target = helpers.load_target_image(&quot;Mona Lisa 64.jpg&quot;, size=(64, 64))
+
+# Setup evolution
+e = evolution.Evolution((64, 64), target)
+
+# Load from checkpoint
+genes = np.loadtxt(&quot;Checkpoint.txt&quot;)
+e.specie.genotype = genes
+
+# Evolve for 50k generations
+e.evolve(max_generation=50000)
+
+# Show evolved phenotype
+helpers.show_image(e.specie.phenotype)
+</code></pre>
+<h1 id="contributing">Contributing</h1>
+<p>Pull requests are welcome.
+For major changes, please open an issue first to discuss what you would like to change.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+# Welcome to Circle Evolution&#39;s Documentation
+
+&lt;p&gt;
+    &lt;img alt=&#34;Circle Evolution Logo&#34; src=&#34;images/logo.png&#34; width=&#34;400&#34;&gt;
+&lt;/p&gt;
+
+# Know your terminology
+
+A specie in Circle Evolution is the object we are optimizing.
+A specie has both a genotype and a phenotype.
+
+The specie&#39;s genotype tells the renderer how the circles should be rendered.
+
+The specie&#39;s phenotype is the rendered image itself.
+
+# Getting Started
+## Installation
+
+Clone or download this repository then run this command in the root folder
+```bash
+python setup.py install
+```
+
+## Usage
+### Command Line
+
+You can easily start training an image by calling circle_evolution from your terminal
+
+**Example:**
+```bash
+circle_evolution &#34;Mona Lisa 64.jpg&#34; --size 1 --genes 256 --max-generations 50000
+```
+
+| Parameter         | Description                                                          |
+| ----------------- | -------------------------------------------------------------------- |
+| --size            | Image size {1: (64, 64), 2: (128, 128), 3: (256, 256)}. *Default: 2* |
+| --genes           | Number of circle to fit. *Default: 256*                              |
+| --max-generations | Number of generations to run. *Default: 500,000*                     |
+
+### Python Example Scripts
+
+This script is the equivalent of running the command mentioned above.
+
+```python
+from circle_evolution import evolution
+from circle_evolution import helpers
+import numpy as np
+import cv2
+
+# Load target image of size (64, 64)
+target = helpers.load_target_image(&#34;Mona Lisa 64.jpg&#34;, size=(64, 64))
+
+# Setup evolution
+e = evolution.Evolution((64, 64), target)
+
+# Evolve for 50k generations
+e.evolve(max_generation=50000)
+
+# Show evolved phenotype
+helpers.show_image(e.specie.phenotype)
+
+# Saves genotype to checkpoint
+np.savetxt(&#34;Checkpoint.txt&#34;, e.specie.genotype)
+
+# Saves phenotype
+cv2.imwrite(&#34;OuputImage.jpg&#34;, e.specie.phenotype)
+```
+
+Here is how to load and train further from a saved checkpoint.
+
+```python
+from circle_evolution import evolution
+from circle_evolution import helpers
+import numpy as np
+import cv2
+
+# Load target image of size (64, 64)
+target = helpers.load_target_image(&#34;Mona Lisa 64.jpg&#34;, size=(64, 64))
+
+# Setup evolution
+e = evolution.Evolution((64, 64), target)
+
+# Load from checkpoint
+genes = np.loadtxt(&#34;Checkpoint.txt&#34;)
+e.specie.genotype = genes
+
+# Evolve for 50k generations
+e.evolve(max_generation=50000)
+
+# Show evolved phenotype
+helpers.show_image(e.specie.phenotype)
+```
+
+# Contributing
+
+Pull requests are welcome.
+For major changes, please open an issue first to discuss what you would like to change.
+&#34;&#34;&#34;
+
+__version__ = &#34;0.0.dev&#34;</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="circle_evolution.evolution" href="evolution.html">circle_evolution.evolution</a></code></dt>
+<dd>
+<div class="desc"><p>Responsible for evolving a specie to look like target image.</p></div>
+</dd>
+<dt><code class="name"><a title="circle_evolution.fitness" href="fitness.html">circle_evolution.fitness</a></code></dt>
+<dd>
+<div class="desc"><p>Fitness functions responsible for quantifying a specie's performance …</p></div>
+</dd>
+<dt><code class="name"><a title="circle_evolution.helpers" href="helpers.html">circle_evolution.helpers</a></code></dt>
+<dd>
+<div class="desc"><p>Helper Functions</p></div>
+</dd>
+<dt><code class="name"><a title="circle_evolution.main" href="main.html">circle_evolution.main</a></code></dt>
+<dd>
+<div class="desc"><p>CLI interface for Circle Evolution</p></div>
+</dd>
+<dt><code class="name"><a title="circle_evolution.species" href="species.html">circle_evolution.species</a></code></dt>
+<dd>
+<div class="desc"><p>A Specie holds information on how the trained image looks …</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#welcome-to-circle-evolutions-documentation">Welcome to Circle Evolution's Documentation</a></li>
+<li><a href="#know-your-terminology">Know your terminology</a></li>
+<li><a href="#getting-started">Getting Started</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#command-line">Command Line</a></li>
+<li><a href="#python-example-scripts">Python Example Scripts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#contributing">Contributing</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="circle_evolution.evolution" href="evolution.html">circle_evolution.evolution</a></code></li>
+<li><code><a title="circle_evolution.fitness" href="fitness.html">circle_evolution.fitness</a></code></li>
+<li><code><a title="circle_evolution.helpers" href="helpers.html">circle_evolution.helpers</a></code></li>
+<li><code><a title="circle_evolution.main" href="main.html">circle_evolution.main</a></code></li>
+<li><code><a title="circle_evolution.species" href="species.html">circle_evolution.species</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -13,14 +13,14 @@ def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
     OpenCV. Attempts to resize image if size is provided.
 
     Args:
-        image_path: path to load the image.
-        color: optional variable for colorspace conversion
+        image_path (str): path to load the image.
+        color: optional variable for colorspace conversion.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
 
     Raises:
-        FileNotFoundError: image_path does not exist
+        FileNotFoundError: image_path does not exist.
     """
     if not os.path.exists(image_path):
         raise FileNotFoundError(f"Image was not found at {image_path}")
@@ -37,7 +37,7 @@ def show_image(img_arr):
     """Displays image on window.
 
     Arguments:
-        img_arr: image array to be displayed
+        img_arr (numpy.ndarray): image array to be displayed
     """
     plt.figure()
     plt.axis("off")
