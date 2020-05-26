@@ -74,3 +74,6 @@ Ahmed Khalf
 
 Guilherme de Amorim
 [guimorg](http://github.com/guimorg)
+
+stking74
+[stking74](http://github.com/stking74)
