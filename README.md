@@ -24,9 +24,9 @@ Evolutionary Art Using Circles
 # Getting Started
 ## Installation
 
-Clone or download this repository then run this command in the root folder
+You can download the latest release using pip.
 ```bash
-python setup.py install
+pip install circle-evolution
 ```
 
 ## Usage
