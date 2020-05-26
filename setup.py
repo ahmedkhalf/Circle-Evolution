@@ -13,6 +13,9 @@ with open("circle_evolution/__init__.py", "rt", encoding="utf8") as f:
     # Normalize version so `setup.py --version` show same version as twine.
     version = str(packaging.version.Version(version))
 
+with open("README.md", "r") as reader:
+    long_description = reader.read()
+
 # Library dependencies
 INSTALL_REQUIRES = ["opencv-python==4.2.0.34", "numpy==1.18.4", "matplotlib==3.2.1", "scikit-image==0.17.2"]
 
@@ -32,6 +35,7 @@ setup(
     name="circle_evolution",
     version=version,
     description="Evolutionary Art Using Circles",
+    long_description=long_description,
     url="https://github.com/ahmedkhalf/Circle-Evolution/",
     packages=find_packages(),
     download_url="https://github.com/ahmedkhalf/Circle-Evolution/archive/v0.1.tar.gz",
