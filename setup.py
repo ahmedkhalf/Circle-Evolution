@@ -31,9 +31,11 @@ TEST_REQUIRES = [
 setup(
     name="circle_evolution",
     version=version,
-    description="",
+    description="Evolutionary Art Using Circles",
     url="git@github.com:ahmedkhalf/Circle-Evolution",
     packages=find_packages(),
+    author="Ahmed Khalf, Guilherme de Amorim",
+    author_email="ahmedkhalf567@gmail.com, ggimenezjr@gmail.com",
     python_requires=">=3.6",
     setup_requires=["wheel"],
     entry_points={"console_scripts": ["circle_evolution=circle_evolution.main:main"]},
