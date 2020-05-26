@@ -32,7 +32,7 @@ setup(
     name="circle_evolution",
     version=version,
     description="Evolutionary Art Using Circles",
-    url="git@github.com:ahmedkhalf/Circle-Evolution",
+    url="https://github.com/ahmedkhalf/Circle-Evolution/",
     packages=find_packages(),
     download_url="https://github.com/ahmedkhalf/Circle-Evolution/archive/v0.1.tar.gz",
     author="Ahmed Khalf, Guilherme de Amorim",
