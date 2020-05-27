@@ -73,7 +73,7 @@ import cv2
 target = helpers.load_target_image(&quot;Mona Lisa 64.jpg&quot;, size=(64, 64))
 
 # Setup evolution
-e = evolution.Evolution((64, 64), target)
+e = evolution.Evolution((64, 64), target, genes=256)
 
 # Evolve for 50k generations
 e.evolve(max_generation=50000)

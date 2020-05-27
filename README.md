@@ -54,7 +54,7 @@ import numpy as np
 import cv2
 
 target = helpers.load_target_image("Mona Lisa 64.jpg", size=(64, 64))
-e = evolution.Evolution((64, 64), target)
+e = evolution.Evolution((64, 64), target, genes=256)
 
 e.evolve(max_generation=50000)
 
