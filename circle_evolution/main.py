@@ -8,6 +8,8 @@ from circle_evolution.evolution import Evolution
 
 import circle_evolution.helpers as helpers
 
+from circle_evolution.reporter import LoggerReporter
+
 
 def main():
     """Entrypoint of application"""
@@ -21,8 +23,11 @@ def main():
     args = parser.parse_args()
 
     target = helpers.load_target_image(args.image, size=size_options[args.size])
+    reporter_logger = LoggerReporter()
 
     evolution = Evolution(size_options[args.size], target, genes=args.genes)
+    evolution.attach(reporter_logger)
+
     evolution.evolve(max_generation=args.max_generations)
 
     evolution.specie.render()
