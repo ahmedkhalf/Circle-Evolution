@@ -23,7 +23,7 @@ class Evolution:
         specie (species.Specie): the Specie that is getting trained.
     """
 
-    def __init__(self, size, target, genes=5):
+    def __init__(self, size, target, genes=100):
         """Initializes Evolution class.
 
         Args:
