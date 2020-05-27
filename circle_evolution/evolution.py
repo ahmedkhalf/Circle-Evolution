@@ -4,12 +4,14 @@ import random
 
 import numpy as np
 
-from circle_evolution.species import Specie
-
 import circle_evolution.fitness as fitness
 
+from circle_evolution.runner import Runner
 
-class Evolution:
+from circle_evolution.species import Specie
+
+
+class Evolution(Runner):
     """Logic for a Species Evolution.
 
     Use the Evolution class when you want to train a Specie to look like
@@ -70,14 +72,6 @@ class Evolution:
 
         return new_specie
 
-    def print_progress(self, fit):
-        """Prints progress of Evolution.
-
-        Args:
-            fit (float): fitness value of specie.
-        """
-        print("GEN {}, FIT {:.8f}".format(self.generation, fit))
-
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
         """Genetic Algorithm for evolution.
 
@@ -87,19 +81,22 @@ class Evolution:
             fitness (fitness.Fitness): fitness class to score species preformance.
             max_generation (int): amount of generations to train for.
         """
-        fitness = fitness(self.target)
+        fitness_ = fitness(self.target)
 
         self.specie.render()
-        fit = fitness.score(self.specie.phenotype)
+        fit = fitness_.score(self.specie.phenotype)
 
         for i in range(max_generation):
             self.generation = i + 1
 
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = fitness.score(mutated.phenotype)
+            newfit = fitness_.score(mutated.phenotype)
 
             if newfit > fit:
                 fit = newfit
                 self.specie = mutated
-                self.print_progress(newfit)
+                self.notify(
+                    f"Generation {self.generation}\t"
+                    f"Fitness: {newfit}"
+                )
