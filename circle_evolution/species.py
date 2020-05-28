@@ -47,7 +47,7 @@ class Specie:
         iteration given the genotype. After render() is done executing, the
         Specie phenotype it set to reflect latest changes in the genotype.
         """
-        self.phenotype[:, :] = 0
+        self.phenotype.fill(0)
         radius_avg = (self.size[0] + self.size[1]) / 2 / 6
         for row in self.genotype:
             overlay = self.phenotype.copy()
