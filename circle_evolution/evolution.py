@@ -16,22 +16,21 @@ class Evolution:
     a target image.
 
     Attributes:
-        size (tuple): tuple containing height and width of target image (h, w).
+        size (tuple): tuple containing np.shape of target image.
         target (np.ndarray): target image for evolution.
         genes (int): the amount of circle to train the target image on.
         generation (int): amount of generations Evolution class has trained.
         specie (species.Specie): the Specie that is getting trained.
     """
 
-    def __init__(self, size, target, genes=100):
+    def __init__(self, target, genes=100):
         """Initializes Evolution class.
 
         Args:
-            size (tuple): tuple containing height and width of target image (h, w).
             target (np.ndarray): target image for evolution.
             genes (int): the amount of circle to train the target image on.
         """
-        self.size = size  # Tuple (y, x)
+        self.size = target.shape
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
