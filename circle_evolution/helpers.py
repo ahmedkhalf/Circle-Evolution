@@ -6,7 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
+def load_target_image(image_path, color=cv2.IMREAD_COLOR, size=None):
     """Loads images from image path.
 
     Loads and converts image to given colorspace for later processing using
@@ -24,9 +24,7 @@ def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
     """
     if not os.path.exists(image_path):
         raise FileNotFoundError(f"Image was not found at {image_path}")
-    img = cv2.imread(image_path)
-    # Performs Image Convertion
-    target = cv2.cvtColor(img, color)
+    target = cv2.imread(image_path, color)
     if size:
         # Only resizes image if it is needed!
         target = cv2.resize(src=target, dsize=size, interpolation=cv2.INTER_AREA)
