@@ -96,7 +96,4 @@ class Evolution(Runner):
             if newfit > fit:
                 fit = newfit
                 self.specie = mutated
-                self.notify(
-                    f"Generation {self.generation}\t"
-                    f"Fitness: {newfit}"
-                )
+                self.notify(f"Generation {self.generation}\t" f"Fitness: {newfit}")

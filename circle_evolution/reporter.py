@@ -17,6 +17,7 @@ class Reporter(ABC):
     them for visualization. Please, use this class if you want to implement
     your own Reporter.
     """
+
     def __init__(self):
         """Initialization calls setup to configure Reporter"""
         self.setup()
@@ -46,33 +47,16 @@ class LoggerReporter(Reporter):
     reporter only cares about strings and will notify minimal details about
     other types.
     """
+
     def setup(self):
         """Sets up Logger"""
         config_initial = {
-            'version': 1,
-            'disable_existing_loggers': True,
-            'formatters': {
-                'simple': {
-                    'format': '%(asctime)s %(name)s %(message)s'
-                },
-            },
-            'handlers': {
-                'console': {
-                    'level': 'INFO',
-                    'class': 'logging.StreamHandler',
-                    'formatter': 'simple'
-                },
-            },
-            'loggers': {
-                'circle-evolution': {
-                    'handlers': ['console'],
-                    'level': 'DEBUG',
-                }
-            },
-            'root': {
-                'handlers': ['console'],
-                'level': 'DEBUG'
-            }
+            "version": 1,
+            "disable_existing_loggers": True,
+            "formatters": {"simple": {"format": "%(asctime)s %(name)s %(message)s"}},
+            "handlers": {"console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"}},
+            "loggers": {"circle-evolution": {"handlers": ["console"], "level": "DEBUG"}},
+            "root": {"handlers": ["console"], "level": "DEBUG"},
         }
         logging.config.dictConfig(config_initial)
         self.logger = logging.getLogger(__name__)  # Creating new logger

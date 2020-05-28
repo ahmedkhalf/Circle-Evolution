@@ -48,6 +48,7 @@ class MSEFitness(Fitness):
 
     See: https://en.wikipedia.org/wiki/Mean_squared_error.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._max_error = (np.square((1 - (self.target >= 127)) * 255 - self.target)).mean(axis=None)

@@ -16,6 +16,7 @@ class Runner:
     Attributes:
         _reporters: list of reporters that are going to receive reports.
     """
+
     _reporters = []
 
     def attach(self, reporter):
