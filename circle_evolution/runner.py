@@ -23,7 +23,14 @@ class Runner:
         """Attaches reporter for notifications"""
         self._reporters.append(reporter)
 
-    def notify(self, report):
+    def notify(self, report, status="processing"):
         """Send report to all attached reporters"""
-        for reporter in self._reporters:
-            reporter.update(report)
+        if status == "start":
+            for reporter in self._reporters:
+                reporter.on_start(report)
+        elif status == "end":
+            for reporter in self._reporters:
+                reporter.on_stop(report)
+        else:
+            for reporter in self._reporters:
+                reporter.update(report)

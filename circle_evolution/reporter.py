@@ -34,7 +34,26 @@ class Reporter(ABC):
         """Receives report from subject.
 
         This is the main function for reporting events. The Reporter receives a
-        report and have to deal with what to do with that.
+        report and have to deal with what to do with that. To accomodate with
+        context, it also receives an status.
+        """
+
+    @abstractmethod
+    def on_start(self, report):
+        """Receives report for when the Subject start processing.
+
+        If a reporter needs to report an object being initialized or starts
+        processing, it can use this. Please note that ALL reporters need
+        to implement this, if it is not used you can just `return` or `pass`
+        """
+
+    @abstractmethod
+    def on_stop(self, report):
+        """Receives report for when the Subject finishes processing.
+
+        If a reporter needs to report an object that finished
+        processing, it can use this. Please note that ALL reporters need
+        to implement this, if it is not used you can just `return` or `pass`
         """
 
 
@@ -74,3 +93,9 @@ class LoggerMetricReporter(Reporter):
         self.logger.info(
             "Generation %s - Fitness %.5f - Improvement %.5f%%", report.generation, report.current_fitness, improvement
         )
+
+    def on_start(self, report):
+        """Just logs the maximum generations"""
+
+    def on_stop(self, report):
+        """Just logs the final fitness"""
