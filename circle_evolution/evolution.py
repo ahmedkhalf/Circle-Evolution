@@ -37,6 +37,7 @@ class Evolution(Runner):
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
+        self.current_fitness = None
 
         self.specie = Specie(size=self.size, genes=genes)
 
@@ -84,7 +85,7 @@ class Evolution(Runner):
         fitness_ = fitness(self.target)
 
         self.specie.render()
-        fit = fitness_.score(self.specie.phenotype)
+        self.current_fitness = fitness_.score(self.specie.phenotype)
 
         for i in range(max_generation):
             self.generation = i + 1
@@ -93,7 +94,7 @@ class Evolution(Runner):
             mutated.render()
             newfit = fitness_.score(mutated.phenotype)
 
-            if newfit > fit:
-                fit = newfit
+            if newfit > self.current_fitness:
+                self.current_fitness = newfit
                 self.specie = mutated
-                self.notify(f"Generation {self.generation}\t" f"Fitness: {newfit}")
+                self.notify(self)

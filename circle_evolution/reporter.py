@@ -34,18 +34,15 @@ class Reporter(ABC):
         """Receives report from subject.
 
         This is the main function for reporting events. The Reporter receives a
-        report and have to deal with what to do with that. For Circle-Evolution
-        you can expect anything from strings to `numpy.array`.
+        report and have to deal with what to do with that.
         """
 
 
-class LoggerReporter(Reporter):
+class LoggerMetricReporter(Reporter):
     """Reporter for logging.
 
     This Reporter is responsible for setting up a Logger object and logging all
-    events that happened during circle-evolution cycle. Notice that this
-    reporter only cares about strings and will notify minimal details about
-    other types.
+    events that happened during circle-evolution cycle.
     """
 
     def setup(self):
@@ -53,17 +50,27 @@ class LoggerReporter(Reporter):
         config_initial = {
             "version": 1,
             "disable_existing_loggers": True,
-            "formatters": {"simple": {"format": "%(asctime)s %(name)s %(message)s"}},
+            "formatters": {"simple": {"format": "%(asctime)s %(name)s %(message)s", "datefmt": "%H:%M:%S"}},
             "handlers": {"console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"}},
             "loggers": {"circle-evolution": {"handlers": ["console"], "level": "DEBUG"}},
             "root": {"handlers": ["console"], "level": "DEBUG"},
         }
         logging.config.dictConfig(config_initial)
         self.logger = logging.getLogger(__name__)  # Creating new logger
+        self.last_fit = float("-inf")  # Value for fresh run
 
     def update(self, report):
         """Logs events using logger"""
         self.logger.debug("Received event...")
-        if isinstance(report, str):
-            # Only deals with string messages
-            self.logger.info(report)
+
+        # We are going to show the percentual improvement from last fit, but
+        # because don't want to slow perfomance we remove having to calculate
+        # really small values
+        improvement = report.current_fitness - self.last_fit
+        self.last_fit = report.current_fitness
+        if improvement > 0.00001:
+            improvement = improvement / self.last_fit * 100
+        # Updating last_fit
+        self.logger.info(
+            "Generation %s - Fitness %.5f - Improvement %.5f%%", report.generation, report.current_fitness, improvement
+        )
