@@ -108,7 +108,7 @@ class LoggerMetricReporter(Reporter):
             self.logger.info(message)
         else:
             message += " - No Improvement"
-            self.logger.info(message)
+            self.logger.debug(message)
 
     def on_start(self, report):
         """Just logs the maximum generations"""
