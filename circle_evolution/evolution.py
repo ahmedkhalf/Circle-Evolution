@@ -4,12 +4,14 @@ import random
 
 import numpy as np
 
-from circle_evolution.species import Specie
-
 import circle_evolution.fitness as fitness
 
+from circle_evolution import runner
 
-class Evolution:
+from circle_evolution.species import Specie
+
+
+class Evolution(runner.Runner):
     """Logic for a Species Evolution.
 
     Use the Evolution class when you want to train a Specie to look like
@@ -35,6 +37,7 @@ class Evolution:
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
+        self.best_fit = self.new_fit = 0
 
         self.specie = Specie(size=self.size, genes=genes)
 
@@ -70,14 +73,6 @@ class Evolution:
 
         return new_specie
 
-    def print_progress(self, fit):
-        """Prints progress of Evolution.
-
-        Args:
-            fit (float): fitness value of specie.
-        """
-        print("GEN {}, FIT {:.8f}".format(self.generation, fit))
-
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
         """Genetic Algorithm for evolution.
 
@@ -87,19 +82,22 @@ class Evolution:
             fitness (fitness.Fitness): fitness class to score species preformance.
             max_generation (int): amount of generations to train for.
         """
-        fitness = fitness(self.target)
+        self.notify(self, runner.START)
+        fitness_ = fitness(self.target)
 
         self.specie.render()
-        fit = fitness.score(self.specie.phenotype)
+        self.best_fit = fitness_.score(self.specie.phenotype)
 
-        for i in range(max_generation):
+        for i in range(0, max_generation):
             self.generation = i + 1
 
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = fitness.score(mutated.phenotype)
+            self.new_fit = fitness_.score(mutated.phenotype)
+            self.notify(self)
 
-            if newfit > fit:
-                fit = newfit
+            if self.new_fit > self.best_fit:
+                self.best_fit = self.new_fit
                 self.specie = mutated
-                self.print_progress(newfit)
+
+        self.notify(self, runner.END)
