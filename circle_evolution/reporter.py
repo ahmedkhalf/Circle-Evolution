@@ -6,8 +6,14 @@ functions should be implemented.
 """
 from abc import ABC, abstractmethod
 
+import csv
+
+from datetime import datetime
+
 import logging
 import logging.config
+
+import tempfile
 
 
 class Reporter(ABC):
@@ -69,33 +75,76 @@ class LoggerMetricReporter(Reporter):
         config_initial = {
             "version": 1,
             "disable_existing_loggers": True,
-            "formatters": {"simple": {"format": "%(asctime)s %(name)s %(message)s", "datefmt": "%H:%M:%S"}},
-            "handlers": {"console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"}},
-            "loggers": {"circle-evolution": {"handlers": ["console"], "level": "DEBUG"}},
-            "root": {"handlers": ["console"], "level": "DEBUG"},
+            "formatters": {
+                "simple": {"format": "Circle-Evolution %(message)s"},
+                "complete": {"format": "%(asctime)s %(name)s %(message)s", "datefmt": "%H:%M:%S"},
+            },
+            "handlers": {
+                "console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"},
+                "file": {
+                    "level": "DEBUG",
+                    "class": "logging.FileHandler",
+                    "filename": f"{tempfile.gettempdir()}/circle_evolution.log",
+                    "mode": "w",
+                    "formatter": "complete",
+                },
+            },
+            "loggers": {"circle-evolution": {"handlers": ["console", "file"], "level": "DEBUG"}},
+            "root": {"handlers": ["console", "file"], "level": "DEBUG"},
         }
         logging.config.dictConfig(config_initial)
         self.logger = logging.getLogger(__name__)  # Creating new logger
-        self.last_fit = float("-inf")  # Value for fresh run
 
     def update(self, report):
         """Logs events using logger"""
         self.logger.debug("Received event...")
 
-        # We are going to show the percentual improvement from last fit, but
-        # because don't want to slow perfomance we remove having to calculate
-        # really small values
-        improvement = report.current_fitness - self.last_fit
-        self.last_fit = report.current_fitness
-        if improvement > 0.00001:
-            improvement = improvement / self.last_fit * 100
-        # Updating last_fit
-        self.logger.info(
-            "Generation %s - Fitness %.5f - Improvement %.5f%%", report.generation, report.current_fitness, improvement
-        )
+        improvement = report.new_fit - report.best_fit
+        message = f"\tGeneration {report.generation} - Fitness {report.new_fit:.5f}"
+
+        if improvement > 0:
+            improvement = improvement / report.best_fit * 100
+            message += f" - Improvement {improvement:.5f}%%"
+            self.logger.info(message)
+        else:
+            message += " - No Improvement"
+            self.logger.info(message)
 
     def on_start(self, report):
         """Just logs the maximum generations"""
+        self.logger.info("Starting evolution...")
 
     def on_stop(self, report):
         """Just logs the final fitness"""
+        self.logger.info("Evolution ended! Enjoy your Circle-Evolved Image!\t" f"Final fitness: {report.best_fit:.5f}")
+
+
+class CSVMetricReporter(Reporter):
+    """CSV Report for Data Analysis.
+
+    In case one wants to extract evolution metrics for a CSV file.
+    """
+
+    def setup(self):
+        """Sets up Logger"""
+        now = datetime.now()
+        self.filename = f"circle-evolution-{now.strftime('%d-%m-%Y_%H-%M-%S')}.csv"
+        self._write_to_csv(["generation", "fitness"])  # header
+
+    def _write_to_csv(self, content):
+        """Safely writes content to CSV file."""
+        with open(self.filename, "a") as fd:
+            writer = csv.writer(fd)
+            writer.writerow(content)
+
+    def update(self, report):
+        """Logs events using logger"""
+        self._write_to_csv([report.generation, report.new_fit])
+
+    def on_start(self, report):
+        # Nothing to do here
+        pass
+
+    def on_stop(self, report):
+        # Nothing to do here
+        pass

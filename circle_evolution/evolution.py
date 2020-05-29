@@ -6,12 +6,12 @@ import numpy as np
 
 import circle_evolution.fitness as fitness
 
-from circle_evolution.runner import Runner
+from circle_evolution import runner
 
 from circle_evolution.species import Specie
 
 
-class Evolution(Runner):
+class Evolution(runner.Runner):
     """Logic for a Species Evolution.
 
     Use the Evolution class when you want to train a Specie to look like
@@ -37,7 +37,7 @@ class Evolution(Runner):
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
-        self.current_fitness = None
+        self.best_fit = self.new_fit = 0
 
         self.specie = Specie(size=self.size, genes=genes)
 
@@ -82,19 +82,22 @@ class Evolution(Runner):
             fitness (fitness.Fitness): fitness class to score species preformance.
             max_generation (int): amount of generations to train for.
         """
+        self.notify(self, runner.START)
         fitness_ = fitness(self.target)
 
         self.specie.render()
-        self.current_fitness = fitness_.score(self.specie.phenotype)
+        self.best_fit = fitness_.score(self.specie.phenotype)
 
-        for i in range(max_generation):
+        for i in range(0, max_generation):
             self.generation = i + 1
 
             mutated = self.mutate(self.specie)
             mutated.render()
-            newfit = fitness_.score(mutated.phenotype)
+            self.new_fit = fitness_.score(mutated.phenotype)
+            self.notify(self)
 
-            if newfit > self.current_fitness:
-                self.current_fitness = newfit
+            if self.new_fit > self.best_fit:
+                self.best_fit = self.new_fit
                 self.specie = mutated
-                self.notify(self)
+
+        self.notify(self, runner.END)
