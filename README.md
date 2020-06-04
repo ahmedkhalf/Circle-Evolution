@@ -36,11 +36,12 @@ You can easily start training an image by calling circle_evolution from your ter
 
 **Example:**
 ```bash
-circle_evolution "Mona Lisa 64.jpg" --genes 256 --max-generations 50000
+circle_evolution "Mona Lisa 64.jpg" --size 1 --genes 256 --max-generations 50000
 ```
 
 | Parameter         | Description                                                          |
 | ----------------- | -------------------------------------------------------------------- |
+| --size            | Image size {1: (64, 64), 2: (128, 128), 3: (256, 256)}. *Default: 2* |
 | --genes           | Number of circle to fit. *Default: 256*                              |
 | --max-generations | Number of generations to run. *Default: 500,000*                     |
 

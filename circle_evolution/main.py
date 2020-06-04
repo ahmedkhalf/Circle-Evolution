@@ -9,18 +9,23 @@ from circle_evolution.evolution import Evolution
 import circle_evolution.helpers as helpers
 
 
+SIZE_OPTIONS = {1: (64, 64), 2: (128, 128), 3: (256, 256), 'auto': None}
+
+
 def main():
     """Entrypoint of application"""
     parser = argparse.ArgumentParser(description="Circle Evolution CLI")
 
     parser.add_argument("image", type=str, help="Image to be processed")
+    parser.add_argument("--size", choices=SIZE_OPTIONS.keys(), default='auto', help="Dimension of the image")
     parser.add_argument("--genes", default=256, type=int, help="Number of genes")
     parser.add_argument("--max-generations", type=int, default=500000)
     args = parser.parse_args()
 
-    target = helpers.load_target_image(args.image)
+    target = helpers.load_target_image(args.image, size=size_options[args.size])
 
-    evolution = Evolution(target.shape, target, genes=args.genes)
+    output_img_dimensions = size_options[args.size] or target.shape
+    evolution = Evolution(output_img_dimensions, target, genes=args.genes)
     evolution.evolve(max_generation=args.max_generations)
 
     evolution.specie.render()
