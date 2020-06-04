@@ -22,9 +22,9 @@ def main():
     parser.add_argument("--max-generations", type=int, default=500000)
     args = parser.parse_args()
 
-    target = helpers.load_target_image(args.image, size=size_options[args.size])
+    target = helpers.load_target_image(args.image, size=SIZE_OPTIONS[args.size])
 
-    output_img_dimensions = size_options[args.size] or target.shape
+    output_img_dimensions = SIZE_OPTIONS[args.size] or target.shape
     evolution = Evolution(output_img_dimensions, target, genes=args.genes)
     evolution.evolve(max_generation=args.max_generations)
 
