@@ -32,8 +32,8 @@ class Specie:
             genotype (np.ndarray): optional - initializes Specie with given genotype.
         """
         self.size = size
-        self.genotypeWidth = 5 if len(size) < 3 else 7
-        self.genotype = genotype if genotype is not None else np.random.rand(genes, self.genotypeWidth)
+        self.genotype_width = 5 if len(size) < 3 else 7
+        self.genotype = genotype if genotype is not None else np.random.rand(genes, self.genotype_width)
         self.phenotype = np.zeros(size)
 
     @property

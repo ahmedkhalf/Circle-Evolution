@@ -50,16 +50,16 @@ class Evolution:
 
         # Randomization for Evolution
         y = random.randint(0, self.genes - 1)
-        change = random.randint(0, new_specie.genotypeWidth + 1)
+        change = random.randint(0, new_specie.genotype_width + 1)
 
-        if change >= new_specie.genotypeWidth + 1:
+        if change >= new_specie.genotype_width + 1:
             change -= 1
             i, j = y, random.randint(0, self.genes - 1)
             i, j, s = (i, j, -1) if i < j else (j, i, 1)
             new_specie.genotype[i : j + 1] = np.roll(new_specie.genotype[i : j + 1], shift=s, axis=0)
             y = j
 
-        selection = np.random.choice(new_specie.genotypeWidth, size=change, replace=False)
+        selection = np.random.choice(new_specie.genotype_width, size=change, replace=False)
 
         if random.random() < 0.25:
             new_specie.genotype[y, selection] = np.random.rand(len(selection))
