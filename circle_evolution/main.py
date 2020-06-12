@@ -22,7 +22,7 @@ def main():
 
     target = helpers.load_target_image(args.image, size=size_options[args.size])
 
-    evolution = Evolution(size_options[args.size], target, genes=args.genes)
+    evolution = Evolution(target, genes=args.genes)
     evolution.evolve(max_generation=args.max_generations)
 
     evolution.specie.render()
