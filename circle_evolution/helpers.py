@@ -29,7 +29,7 @@ def load_target_image(image_path, color=True, size=None):
     if color:
         target = cv2.imread(image_path, cv2.IMREAD_COLOR)
         # Switch from bgr to rgb
-        target = target[:, :, (2, 1, 0)]
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
     else:
         target = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
