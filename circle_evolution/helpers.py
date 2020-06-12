@@ -16,6 +16,8 @@ def load_target_image(image_path, color=True, size=None):
         image_path (str): path to load the image.
         color (bool): if true the image is loaded as rgb, if false grayscale.
             Defaults to true.
+        size (tuple): size of target image as (height, width). If None, then
+            original image dimension is kept.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
