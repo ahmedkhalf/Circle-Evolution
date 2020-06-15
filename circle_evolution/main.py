@@ -24,12 +24,10 @@ def main():
 
     target = helpers.load_target_image(args.image, size=SIZE_OPTIONS[args.size])
 
-    output_img_dimensions = SIZE_OPTIONS[args.size] or target.shape
-    evolution = Evolution(output_img_dimensions, target, genes=args.genes)
+    evolution = Evolution(target, genes=args.genes)
     evolution.evolve(max_generation=args.max_generations)
 
     evolution.specie.render()
-
     helpers.show_image(evolution.specie.phenotype)
 
     output_path_checkpoint = "checkpoint-{}.txt".format(evolution.generation)

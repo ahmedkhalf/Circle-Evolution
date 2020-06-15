@@ -32,7 +32,8 @@ class Specie:
             genotype (np.ndarray): optional - initializes Specie with given genotype.
         """
         self.size = size
-        self.genotype = genotype if genotype is not None else np.random.rand(genes, 5)
+        self.genotype_width = 5 if len(size) < 3 else 7
+        self.genotype = genotype if genotype is not None else np.random.rand(genes, self.genotype_width)
         self.phenotype = np.zeros(size)
 
     @property
@@ -47,17 +48,18 @@ class Specie:
         iteration given the genotype. After render() is done executing, the
         Specie phenotype it set to reflect latest changes in the genotype.
         """
-        self.phenotype[:, :] = 0
+        self.phenotype.fill(0)
         radius_avg = (self.size[0] + self.size[1]) / 2 / 6
         for row in self.genotype:
             overlay = self.phenotype.copy()
+            color = (row[3:-1] * 255).astype(int).tolist()
             cv2.circle(
                 overlay,
                 center=(int(row[1] * self.size[1]), int(row[0] * self.size[0])),
                 radius=int(row[2] * radius_avg),
-                color=(int(row[3] * 255)),
+                color=color,
                 thickness=-1,
             )
 
-            alpha = row[4]
+            alpha = row[-1]
             self.phenotype = cv2.addWeighted(overlay, alpha, self.phenotype, 1 - alpha, 0)

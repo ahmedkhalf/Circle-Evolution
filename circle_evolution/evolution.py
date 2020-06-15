@@ -16,22 +16,21 @@ class Evolution:
     a target image.
 
     Attributes:
-        size (tuple): tuple containing height and width of target image (h, w).
+        size (tuple): tuple containing np.shape of target image.
         target (np.ndarray): target image for evolution.
         genes (int): the amount of circle to train the target image on.
         generation (int): amount of generations Evolution class has trained.
         specie (species.Specie): the Specie that is getting trained.
     """
 
-    def __init__(self, size, target, genes=100):
+    def __init__(self, target, genes=100):
         """Initializes Evolution class.
 
         Args:
-            size (tuple): tuple containing height and width of target image (h, w).
             target (np.ndarray): target image for evolution.
             genes (int): the amount of circle to train the target image on.
         """
-        self.size = size  # Tuple (y, x)
+        self.size = target.shape
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
@@ -51,16 +50,16 @@ class Evolution:
 
         # Randomization for Evolution
         y = random.randint(0, self.genes - 1)
-        change = random.randint(0, 6)
+        change = random.randint(0, new_specie.genotype_width + 1)
 
-        if change >= 6:
+        if change >= new_specie.genotype_width + 1:
             change -= 1
             i, j = y, random.randint(0, self.genes - 1)
             i, j, s = (i, j, -1) if i < j else (j, i, 1)
             new_specie.genotype[i : j + 1] = np.roll(new_specie.genotype[i : j + 1], shift=s, axis=0)
             y = j
 
-        selection = np.random.choice(5, size=change, replace=False)
+        selection = np.random.choice(new_specie.genotype_width, size=change, replace=False)
 
         if random.random() < 0.25:
             new_specie.genotype[y, selection] = np.random.rand(len(selection))
