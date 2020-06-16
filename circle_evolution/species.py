@@ -69,7 +69,7 @@ class Specie:
 
         Args:
             fname: the file you would like to save to.
-            text (bool): whether to save as text or binary. Default: False
+            text (bool): whether to save as text or numpy format. Default: False
         """
         if text:
             np.savetxt(fname, self.genotype)
@@ -81,7 +81,7 @@ class Specie:
 
         Args:
             fname: the file you would like to load from.
-            text (bool): whether to load as text or binary. Default: False
+            text (bool): whether to load as text or numpy format. Default: False
         """
         if text:
             self.genotype = np.loadtxt(fname)
