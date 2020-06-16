@@ -63,3 +63,14 @@ class Specie:
 
             alpha = row[-1]
             self.phenotype = cv2.addWeighted(overlay, alpha, self.phenotype, 1 - alpha, 0)
+
+    def save_checkpoint(self, fname, text=False):
+        """Save genotype to a checkpoint.
+
+        Args:
+            text (bool): whether to save as text or binary. Default: False
+        """
+        if text:
+            np.savetxt(fname, self.genotype)
+        else:
+            np.save(fname, self.genotype)
