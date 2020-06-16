@@ -68,9 +68,22 @@ class Specie:
         """Save genotype to a checkpoint.
 
         Args:
+            fname: the file you would like to save to.
             text (bool): whether to save as text or binary. Default: False
         """
         if text:
             np.savetxt(fname, self.genotype)
         else:
             np.save(fname, self.genotype)
+
+    def load_checkpoint(self, fname, text=False):
+        """Load genotype from a checkpoint.
+
+        Args:
+            fname: the file you would like to load from.
+            text (bool): whether to load as text or binary. Default: False
+        """
+        if text:
+            self.genotype = np.loadtxt(fname)
+        else:
+            self.genotype = np.load(fname)
