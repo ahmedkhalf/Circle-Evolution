@@ -4,6 +4,7 @@ import argparse
 
 import numpy as np
 
+from circle_evolution import __version__
 from circle_evolution.evolution import Evolution
 
 import circle_evolution.helpers as helpers
@@ -14,7 +15,7 @@ SIZE_OPTIONS = {1: (64, 64), 2: (128, 128), 3: (256, 256), 'auto': None}
 
 def main():
     """Entrypoint of application"""
-    parser = argparse.ArgumentParser(description="Circle Evolution CLI")
+    parser = argparse.ArgumentParser(description=f"Circle Evolution CLI v{__version__}")
 
     parser.add_argument("image", type=str, help="Image to be processed")
     parser.add_argument("--size", choices=SIZE_OPTIONS.keys(), default='auto', help="Dimension of the image")
