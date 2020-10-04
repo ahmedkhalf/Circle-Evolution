@@ -94,7 +94,7 @@ class Specie:
 
         Args:
             resolution (tuple): (height, width) of target image.
-                If None (default), uses target image resolution.
+                If None, uses target image resolution. Defaults to None.
         """
         im = Image.fromarray(self.phenotype.astype("uint8"))
 
