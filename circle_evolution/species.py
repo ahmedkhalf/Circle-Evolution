@@ -5,7 +5,7 @@ like, while the phnotype is the image itself.
 """
 
 import cv2
-
+from PIL import Image
 import numpy as np
 
 
@@ -87,3 +87,37 @@ class Specie:
             self.genotype = np.loadtxt(fname)
         else:
             self.genotype = np.load(fname)
+
+    def show_img(self, resolution=None):
+        """
+        Displays image of phenotype.
+
+        Args:
+            resolution (tuple): (height, width) of target image.
+                If None (default), uses target image resolution.
+        """
+        im = Image.fromarray(self.phenotype.astype("uint8"))
+
+        if resolution is None:
+            im.show()
+        else:
+            im_resized = im.resize(resolution)
+            im_resized.show()
+
+    def save_img(fname, resolution=None):
+        """
+        Saves image of phenotype.
+
+        Args:
+            fname (string): Filename to save the image to. Includes format postfix, e.g. `jpg` or `png`.
+            resolution (tuple): (height, width) of target image.
+                If None (default), uses target image resolution.
+        """
+        im = Image.fromarray(self.phenotype.astype("uint8"))
+
+        if resolution is None:
+            im.save(fname)
+        else:
+            im_resized = im.resize(resolution)
+            im_resized.save(fname)
+
