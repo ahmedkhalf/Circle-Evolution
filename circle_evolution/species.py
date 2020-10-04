@@ -104,14 +104,14 @@ class Specie:
             im_resized = im.resize(resolution)
             im_resized.show()
 
-    def save_img(fname, resolution=None):
+    def save_img(self, fname, resolution=None):
         """
         Saves image of phenotype.
 
         Args:
             fname (string): Filename to save the image to. Includes format postfix, e.g. `jpg` or `png`.
             resolution (tuple): (height, width) of target image.
-                If None (default), uses target image resolution.
+                If None, uses target image resolution. Defaults to None.
         """
         im = Image.fromarray(self.phenotype.astype("uint8"))
 
