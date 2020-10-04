@@ -74,3 +74,6 @@ Ahmed Khalf
 
 Guilherme de Amorim
 [guimorg](http://github.com/guimorg)
+
+Tan Nian Wei
+[tnwei](http://github.com/tnwei)
