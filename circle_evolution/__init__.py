@@ -58,13 +58,16 @@ e = evolution.Evolution((64, 64), target)
 e.evolve(max_generation=50000)
 
 # Show evolved phenotype
-helpers.show_image(e.specie.phenotype)
+e.specie.show_img()
 
 # Saves genotype to checkpoint
 np.savetxt("Checkpoint.txt", e.specie.genotype)
 
 # Saves phenotype
-cv2.imwrite("OuputImage.jpg", e.specie.phenotype)
+e.specie.save_img("OutputImage.jpg")
+
+# Saves phenotype, resized
+e.specie.save_img("OutputImage128x128.jpg", (128, 128))
 ```
 
 Here is how to load and train further from a saved checkpoint.
@@ -89,7 +92,7 @@ e.specie.genotype = genes
 e.evolve(max_generation=50000)
 
 # Show evolved phenotype
-helpers.show_image(e.specie.phenotype)
+e.specie.show_img()
 ```
 
 # Contributing
