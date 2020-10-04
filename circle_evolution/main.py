@@ -29,7 +29,7 @@ def main():
     evolution.evolve(max_generation=args.max_generations)
 
     evolution.specie.render()
-    helpers.show_image(evolution.specie.phenotype)
+    evolution.specie.show_img()
 
     output_path_checkpoint = "checkpoint-{}.txt".format(evolution.generation)
     np.savetxt(output_path_checkpoint, evolution.specie.genotype)

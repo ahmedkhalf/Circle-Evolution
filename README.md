@@ -58,10 +58,10 @@ e = evolution.Evolution((64, 64), target, genes=256)
 
 e.evolve(max_generation=50000)
 
-helpers.show_image(e.specie.phenotype)
+e.specie.show_img()
 
 np.savetxt("Checkpoint.txt", e.specie.genotype)
-cv2.imwrite("OuputImage.jpg", e.specie.phenotype)
+e.specie.save_img("OutputImage.jpg")
 ```
 # Contributing
 
@@ -74,3 +74,6 @@ Ahmed Khalf
 
 Guilherme de Amorim
 [guimorg](http://github.com/guimorg)
+
+Tan Nian Wei
+[tnwei](http://github.com/tnwei)

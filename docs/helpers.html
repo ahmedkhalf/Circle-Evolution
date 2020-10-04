@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.1" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>circle_evolution.helpers API documentation</title>
 <meta name="description" content="Helper Functions" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
@@ -27,13 +29,9 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Helper Functions&#34;&#34;&#34;
 import os
-
 import cv2
 
-import matplotlib.pyplot as plt
-
-
-def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
+def load_target_image(image_path, color=True, size=None):
     &#34;&#34;&#34;Loads images from image path.
 
     Loads and converts image to given colorspace for later processing using
@@ -41,7 +39,10 @@ def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
 
     Args:
         image_path (str): path to load the image.
-        color: optional variable for colorspace conversion.
+        color (bool): if true the image is loaded as rgb, if false grayscale.
+            Defaults to true.
+        size (tuple): size of target image as (height, width). If None, then
+            original image dimension is kept.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
@@ -51,25 +52,18 @@ def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
     &#34;&#34;&#34;
     if not os.path.exists(image_path):
         raise FileNotFoundError(f&#34;Image was not found at {image_path}&#34;)
-    img = cv2.imread(image_path)
-    # Performs Image Convertion
-    target = cv2.cvtColor(img, color)
+
+    if color:
+        target = cv2.imread(image_path, cv2.IMREAD_COLOR)
+        # Switch from bgr to rgb
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
+    else:
+        target = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
     if size:
         # Only resizes image if it is needed!
         target = cv2.resize(src=target, dsize=size, interpolation=cv2.INTER_AREA)
-    return target
-
-
-def show_image(img_arr):
-    &#34;&#34;&#34;Displays image on window.
-
-    Arguments:
-        img_arr (numpy.ndarray): image array to be displayed
-    &#34;&#34;&#34;
-    plt.figure()
-    plt.axis(&#34;off&#34;)
-    plt.imshow(img_arr, cmap=&#34;gray&#34;, vmin=0, vmax=255)
-    plt.show()</code></pre>
+    return target</code></pre>
 </details>
 </section>
 <section>
@@ -80,7 +74,7 @@ def show_image(img_arr):
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="circle_evolution.helpers.load_target_image"><code class="name flex">
-<span>def <span class="ident">load_target_image</span></span>(<span>image_path, color=6, size=None)</span>
+<span>def <span class="ident">load_target_image</span></span>(<span>image_path, color=True, size=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Loads images from image path.</p>
@@ -90,8 +84,12 @@ OpenCV. Attempts to resize image if size is provided.</p>
 <dl>
 <dt><strong><code>image_path</code></strong> :&ensp;<code>str</code></dt>
 <dd>path to load the image.</dd>
-<dt><strong><code>color</code></strong></dt>
-<dd>optional variable for colorspace conversion.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if true the image is loaded as rgb, if false grayscale.
+Defaults to true.</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>size of target image as (height, width). If None, then
+original image dimension is kept.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>Image loaded from the path as a numpy.ndarray.</p>
@@ -104,7 +102,7 @@ OpenCV. Attempts to resize image if size is provided.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_target_image(image_path, color=cv2.COLOR_BGR2GRAY, size=None):
+<pre><code class="python">def load_target_image(image_path, color=True, size=None):
     &#34;&#34;&#34;Loads images from image path.
 
     Loads and converts image to given colorspace for later processing using
@@ -112,7 +110,10 @@ OpenCV. Attempts to resize image if size is provided.</p>
 
     Args:
         image_path (str): path to load the image.
-        color: optional variable for colorspace conversion.
+        color (bool): if true the image is loaded as rgb, if false grayscale.
+            Defaults to true.
+        size (tuple): size of target image as (height, width). If None, then
+            original image dimension is kept.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
@@ -122,36 +123,18 @@ OpenCV. Attempts to resize image if size is provided.</p>
     &#34;&#34;&#34;
     if not os.path.exists(image_path):
         raise FileNotFoundError(f&#34;Image was not found at {image_path}&#34;)
-    img = cv2.imread(image_path)
-    # Performs Image Convertion
-    target = cv2.cvtColor(img, color)
+
+    if color:
+        target = cv2.imread(image_path, cv2.IMREAD_COLOR)
+        # Switch from bgr to rgb
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
+    else:
+        target = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
     if size:
         # Only resizes image if it is needed!
         target = cv2.resize(src=target, dsize=size, interpolation=cv2.INTER_AREA)
     return target</code></pre>
-</details>
-</dd>
-<dt id="circle_evolution.helpers.show_image"><code class="name flex">
-<span>def <span class="ident">show_image</span></span>(<span>img_arr)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Displays image on window.</p>
-<h2 id="arguments">Arguments</h2>
-<p>img_arr (numpy.ndarray): image array to be displayed</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def show_image(img_arr):
-    &#34;&#34;&#34;Displays image on window.
-
-    Arguments:
-        img_arr (numpy.ndarray): image array to be displayed
-    &#34;&#34;&#34;
-    plt.figure()
-    plt.axis(&#34;off&#34;)
-    plt.imshow(img_arr, cmap=&#34;gray&#34;, vmin=0, vmax=255)
-    plt.show()</code></pre>
 </details>
 </dd>
 </dl>
@@ -173,16 +156,13 @@ OpenCV. Attempts to resize image if size is provided.</p>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="circle_evolution.helpers.load_target_image" href="#circle_evolution.helpers.load_target_image">load_target_image</a></code></li>
-<li><code><a title="circle_evolution.helpers.show_image" href="#circle_evolution.helpers.show_image">show_image</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
 </body>
 </html>

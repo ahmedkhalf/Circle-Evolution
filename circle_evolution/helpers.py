@@ -1,10 +1,6 @@
 """Helper Functions"""
 import os
-
 import cv2
-
-import matplotlib.pyplot as plt
-
 
 def load_target_image(image_path, color=True, size=None):
     """Loads images from image path.
@@ -39,15 +35,3 @@ def load_target_image(image_path, color=True, size=None):
         # Only resizes image if it is needed!
         target = cv2.resize(src=target, dsize=size, interpolation=cv2.INTER_AREA)
     return target
-
-
-def show_image(img_arr):
-    """Displays image on window.
-
-    Arguments:
-        img_arr (numpy.ndarray): image array to be displayed
-    """
-    plt.figure()
-    plt.axis("off")
-    plt.imshow(img_arr / 255)
-    plt.show()
