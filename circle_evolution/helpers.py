@@ -1,10 +1,6 @@
 """Helper Functions"""
 import os
-
 import cv2
-
-import matplotlib.pyplot as plt
-
 
 def load_target_image(image_path, color=True, size=None):
     """Loads images from image path.
