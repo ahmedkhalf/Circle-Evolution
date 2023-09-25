@@ -4,9 +4,9 @@ A specie is the basis of evolution, the genotype represents how the image looks
 like, while the phnotype is the image itself.
 """
 
-import cv2
-
 import numpy as np
+
+from circle_evolution.render import CircleRenderer
 
 
 class Specie:
@@ -23,7 +23,7 @@ class Specie:
             rendered. Call render() before accessing it.
     """
 
-    def __init__(self, size, genes=128, genotype=None):
+    def __init__(self, size, renderer: CircleRenderer, genes=128, genotype=None):
         """Initializes Specie with given size.
 
         Args:
@@ -34,7 +34,8 @@ class Specie:
         self.size = size
         self.genotype_width = 5 if len(size) < 3 else 7
         self.genotype = genotype if genotype is not None else np.random.rand(genes, self.genotype_width)
-        self.phenotype = np.zeros(size)
+        self.phenotype = np.zeros(size, dtype=np.uint8)
+        self.renderer = renderer
 
     @property
     def genes(self):
@@ -42,27 +43,14 @@ class Specie:
         return self.genotype.shape[0]
 
     def render(self):
-        """Renders image using the species definition.
+        radius_avg = (self.size[0] + self.size[1]) / 2 / 3
 
-        Performing the Evolution, this function renders the image for current
-        iteration given the genotype. After render() is done executing, the
-        Specie phenotype it set to reflect latest changes in the genotype.
-        """
-        self.phenotype.fill(0)
-        radius_avg = (self.size[0] + self.size[1]) / 2 / 6
-        for row in self.genotype:
-            overlay = self.phenotype.copy()
-            color = (row[3:-1] * 255).astype(int).tolist()
-            cv2.circle(
-                overlay,
-                center=(int(row[1] * self.size[1]), int(row[0] * self.size[0])),
-                radius=int(row[2] * radius_avg),
-                color=color,
-                thickness=-1,
-            )
-
-            alpha = row[-1]
-            self.phenotype = cv2.addWeighted(overlay, alpha, self.phenotype, 1 - alpha, 0)
+        self.phenotype = self.renderer.render(
+            self.genes,
+            self.genotype[:, [1, 0]] * (self.size[1], self.size[0]),
+            self.genotype[:, 2] * radius_avg,
+            self.genotype[:, [3, 3, 3, 4]] if self.genotype_width == 5 else self.genotype[:, 3:7]
+        )
 
     def save_checkpoint(self, fname, text=False):
         """Save genotype to a checkpoint.

@@ -18,7 +18,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 # Library dependencies
-INSTALL_REQUIRES = ["opencv-python==4.2.0.34", "numpy==1.18.4", "matplotlib==3.2.1", "scikit-image==0.17.2"]
+INSTALL_REQUIRES = ["opencv-python", "numpy", "matplotlib", "scikit-image"]
 
 # Testing dependencies
 TEST_REQUIRES = [

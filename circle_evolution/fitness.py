@@ -27,6 +27,7 @@ class Fitness:
             target (np.ndarray): target image array.
         """
         self.target = target
+        self.target = self.target.astype(np.float32)
 
     def score(self, phenotype):
         """Score a Specie.
