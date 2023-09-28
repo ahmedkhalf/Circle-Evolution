@@ -27,7 +27,7 @@ class Specie:
         """Initializes Specie with given size.
 
         Args:
-            size (tuple): tuple containing height and width of generated image (h, w).
+            size (tuple): tuple containing width and height of generated image (w, h).
             genes (int): number of genes/circle in Specie. Dafaults to 128.
             genotype (np.ndarray): optional - initializes Specie with given genotype.
         """
@@ -47,7 +47,7 @@ class Specie:
 
         self.phenotype = self.renderer.render(
             self.genes,
-            self.genotype[:, [1, 0]] * (self.size[1], self.size[0]),
+            self.genotype[:, 0:2] * (self.size[1], self.size[0]),
             self.genotype[:, 2] * radius_avg,
             self.genotype[:, [3, 3, 3, 4]] if self.genotype_width == 5 else self.genotype[:, 3:7]
         )

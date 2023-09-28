@@ -34,7 +34,7 @@ class Evolution:
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
-        self.renderer = CircleRenderer((self.size[1], self.size[0]))
+        self.renderer = CircleRenderer((self.size[0], self.size[1]), gray=len(self.size) < 3)
 
         self.specie = Specie(size=self.size, renderer=self.renderer, genes=genes)
 

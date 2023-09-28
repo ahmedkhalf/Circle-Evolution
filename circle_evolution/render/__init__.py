@@ -5,7 +5,17 @@ from pathlib import Path
 
 
 class CircleRenderer:
-    def __init__(self, size: tuple[int, int]) -> None:
+    def __init__(self, size: tuple[int, int], gray=False) -> None:
+        """Render circles using opengl.
+
+        Args:
+            size (tuple): tuple containing height and width of generated image
+                (h, w).
+            gray (bool): whether to render image as grayscale or rgb. Defaults
+                to False (rgb).
+        """
+        self.gray = gray
+
         # Initialize ModernGL context
         ctx = moderngl.create_standalone_context()
 
@@ -24,8 +34,8 @@ class CircleRenderer:
         )
 
         # Set the image width and height as a vec2 uniform
-        self._width, self._height = size
-        self._prog['iResolution'] = size
+        self._height, self._width = size
+        self._prog['iResolution'] = (self._width, self._height)
 
         # Create a fullscreen quad VAO
         quad_vertices = np.array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0], dtype='f4')
@@ -33,8 +43,9 @@ class CircleRenderer:
         self._vao = ctx.simple_vertex_array(self._prog, vbo, 'in_vert')
 
         # Create a framebuffer to render into
+        num_dim = 1 if self.gray else 3
         self._fbo = ctx.framebuffer(
-            color_attachments=[ctx.texture(size, 4)],
+            color_attachments=[ctx.texture((self._width, self._height), num_dim)],
         )
 
         # Use the framebuffer for rendering
@@ -53,10 +64,16 @@ class CircleRenderer:
         self._vao.render(moderngl.TRIANGLE_STRIP)
 
         # Read the rendered image from the framebuffer
-        pixels = self._fbo.read(components=3, dtype='f1')
+        # And convert the image to a numpy array
+        if self.gray:
+            pixels = self._fbo.read(components=1, dtype='f1')
 
-        # Convert the image to a numpy array
-        image_data = np.frombuffer(pixels, dtype=np.uint8)
-        image_data = image_data.reshape((self._height, self._width, 3))
+            image_data = np.frombuffer(pixels, dtype=np.uint8)
+            image_data = image_data.reshape((self._height, self._width))
+        else:
+            pixels = self._fbo.read(components=3, dtype='f1')
+
+            image_data = np.frombuffer(pixels, dtype=np.uint8)
+            image_data = image_data.reshape((self._height, self._width, 3))
 
         return image_data

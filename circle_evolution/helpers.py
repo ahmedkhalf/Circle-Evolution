@@ -1,12 +1,10 @@
 """Helper Functions"""
-import os
 
-import cv2
-
-import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
 
-def load_target_image(image_path, color=True, size=None):
+def load_target_image(image_path, gray=False, size: None | int | tuple[int, int]=None):
     """Loads images from image path.
 
     Loads and converts image to given colorspace for later processing using
@@ -14,31 +12,30 @@ def load_target_image(image_path, color=True, size=None):
 
     Args:
         image_path (str): path to load the image.
-        color (bool): if true the image is loaded as rgb, if false grayscale.
-            Defaults to true.
-        size (tuple): size of target image as (height, width). If None, then
-            original image dimension is kept.
+        gray (bool): if True the image is loaded as grayscale, if False rgb.
+            Defaults to False.
+        size (tuple or int): size of target image as (width, height), or width
+            and preserve aspect ratio. If None, then original image dimension is
+            kept.
 
     Returns:
         Image loaded from the path as a numpy.ndarray.
-
-    Raises:
-        FileNotFoundError: image_path does not exist.
     """
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Image was not found at {image_path}")
+    target = Image.open(image_path)
 
-    if color:
-        target = cv2.imread(image_path, cv2.IMREAD_COLOR)
-        # Switch from bgr to rgb
-        target = cv2.cvtColor(target, cv2.COLOR_BGR2RGB)
+    if gray:
+        target = target.convert("L")
     else:
-        target = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        target = target.convert("RGB")
 
-    if size:
-        # Only resizes image if it is needed!
-        target = cv2.resize(src=target, dsize=size, interpolation=cv2.INTER_AREA)
-    return target
+    if isinstance(size, int):
+        width = size
+        height = int(size * target.height / target.width)
+        target = target.resize((width, height))
+    elif isinstance(size, tuple):
+        target = target.resize(size)
+
+    return np.array(target, dtype=np.uint8)
 
 
 def show_image(img_arr):
@@ -47,7 +44,5 @@ def show_image(img_arr):
     Arguments:
         img_arr (numpy.ndarray): image array to be displayed
     """
-    plt.figure()
-    plt.axis("off")
-    plt.imshow(img_arr / 255)
-    plt.show()
+    img = Image.fromarray(img_arr)
+    img.show()
