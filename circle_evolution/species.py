@@ -52,7 +52,7 @@ class Specie:
             self.genotype[:, [3, 3, 3, 4]] if self.genotype_width == 5 else self.genotype[:, 3:7]
         )
 
-    def save_checkpoint(self, fname, text=False):
+    def save_checkpoint(self, fname, text=True):
         """Save genotype to a checkpoint.
 
         Args:
@@ -64,7 +64,7 @@ class Specie:
         else:
             np.save(fname, self.genotype)
 
-    def load_checkpoint(self, fname, text=False):
+    def load_checkpoint(self, fname, text=True):
         """Load genotype from a checkpoint.
 
         Args:
@@ -72,6 +72,6 @@ class Specie:
             text (bool): whether to load as text or numpy format. Default: False
         """
         if text:
-            self.genotype = np.loadtxt(fname)
+            self.genotype = np.loadtxt(fname, dtype=np.float64)
         else:
             self.genotype = np.load(fname)

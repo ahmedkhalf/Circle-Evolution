@@ -76,7 +76,7 @@ class Evolution:
         Args:
             fit (float): fitness value of specie.
         """
-        print("GEN {}, FIT {:.8f}".format(self.generation, fit))
+        print(f"\33[2K\rGEN {self.generation}, FIT {fit:.8f}", end="")
 
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
         """Genetic Algorithm for evolution.
