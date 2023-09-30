@@ -27,6 +27,7 @@ def main():
     evolution = Evolution(target, genes=args.genes)
     print(f"Using GPU '{evolution.renderer.gpu_name}'")
 
+    # TODO add loading and saving checkpoint logic inside of evolution class
     starting_generation = 0
     if args.load_checkpoint is not None:
         evolution.specie.load_checkpoint(args.load_checkpoint)
@@ -46,6 +47,7 @@ def main():
         else:
             print("")
 
+    # TODO add logic for saving specie to different size than training size
     if args.output_width is not None:
         target = helpers.load_target_image(args.image, size=args.output_width)
         out_evolution = Evolution(target, genes=args.genes)

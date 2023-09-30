@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 
-def load_target_image(image_path, gray=False, size: None | int | tuple[int, int]=None):
+def load_target_image(image_path, gray=False, height=None, width=None):
     """Loads images from image path.
 
     Loads and converts image to given colorspace for later processing using
@@ -28,12 +28,14 @@ def load_target_image(image_path, gray=False, size: None | int | tuple[int, int]
     else:
         target = target.convert("RGB")
 
-    if isinstance(size, int):
-        width = size
-        height = int(size * target.height / target.width)
+    if width is not None and height is not None:
         target = target.resize((width, height))
-    elif isinstance(size, tuple):
-        target = target.resize(size)
+    elif height is not None:
+        width = int(height * target.width / target.height)
+        target = target.resize((width, height))
+    elif width is not None:
+        height = int(width * target.height / target.width)
+        target = target.resize((width, height))
 
     return np.array(target, dtype=np.uint8)
 
@@ -46,3 +48,13 @@ def show_image(img_arr):
     """
     img = Image.fromarray(img_arr)
     img.show()
+
+
+def save_image(img_arr, filename):
+    """Save image to disk.
+
+    Arguments:
+        img_arr (numpy.ndarray): image array to be saved
+    """
+    img = Image.fromarray(img_arr)
+    img.save(filename)

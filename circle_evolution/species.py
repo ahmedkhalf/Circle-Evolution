@@ -43,12 +43,12 @@ class Specie:
         return self.genotype.shape[0]
 
     def render(self):
-        radius_avg = (self.size[0] + self.size[1]) / 2 / 3
+        radius_max = (self.size[0] + self.size[1]) / 2
 
         self.phenotype = self.renderer.render(
             self.genes,
             self.genotype[:, 0:2] * (self.size[1], self.size[0]),
-            self.genotype[:, 2] * radius_avg,
+            self.genotype[:, 2] * radius_max,
             self.genotype[:, [3, 3, 3, 4]] if self.genotype_width == 5 else self.genotype[:, 3:7]
         )
 

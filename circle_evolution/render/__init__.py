@@ -17,9 +17,9 @@ class CircleRenderer:
         self.gray = gray
 
         # Initialize ModernGL context
-        ctx = moderngl.create_standalone_context()
+        self._ctx = moderngl.create_context(standalone=True, require=400)
 
-        self.gpu_name = ctx.info['GL_RENDERER']
+        self.gpu_name = self._ctx.info['GL_RENDERER']
 
         current_folder = Path(__file__).parent.resolve()
         with open(current_folder / "base.vert", 'r') as f:
@@ -28,7 +28,7 @@ class CircleRenderer:
             fragment_shader = f.read()
 
         # Compile the shaders
-        self._prog = ctx.program(
+        self._prog = self._ctx.program(
             vertex_shader=vertex_shader,
             fragment_shader=fragment_shader,
         )
@@ -39,20 +39,27 @@ class CircleRenderer:
 
         # Create a fullscreen quad VAO
         quad_vertices = np.array([-1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0], dtype='f4')
-        vbo = ctx.buffer(quad_vertices)
-        self._vao = ctx.simple_vertex_array(self._prog, vbo, 'in_vert')
+        self._vbo = self._ctx.buffer(quad_vertices)
+        self._vao = self._ctx.simple_vertex_array(self._prog, self._vbo, 'in_vert')
 
         # Create a framebuffer to render into
         num_dim = 1 if self.gray else 3
-        self._fbo = ctx.framebuffer(
-            color_attachments=[ctx.texture((self._width, self._height), num_dim)],
+        self._fbo = self._ctx.framebuffer(
+            color_attachments=[self._ctx.texture((self._width, self._height), num_dim)],
         )
 
         # Use the framebuffer for rendering
         self._fbo.use()
 
         # Clear the framebuffer
-        ctx.clear()
+        self._ctx.clear()
+
+    def __del__(self):
+        self._fbo.release()
+        self._vao.release()
+        self._vbo.release()
+        self._prog.release()
+        self._ctx.release()
 
     def render(self, count, pos, radii, colors):
         self._prog['circleCount'] = count
