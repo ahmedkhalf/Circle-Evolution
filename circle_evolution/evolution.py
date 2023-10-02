@@ -5,7 +5,7 @@ import random
 import numpy as np
 
 from circle_evolution.species import Specie
-
+from circle_evolution.render import CircleRenderer
 import circle_evolution.fitness as fitness
 
 
@@ -34,8 +34,9 @@ class Evolution:
         self.target = target  # Target Image
         self.generation = 1
         self.genes = genes
+        self.renderer = CircleRenderer((self.size[0], self.size[1]), gray=len(self.size) < 3)
 
-        self.specie = Specie(size=self.size, genes=genes)
+        self.specie = Specie(size=self.size, renderer=self.renderer, genes=genes)
 
     def mutate(self, specie):
         """Mutates specie for evolution.
@@ -46,7 +47,7 @@ class Evolution:
         Returns:
             New Specie class, that has been mutated.
         """
-        new_specie = Specie(size=self.size, genotype=np.array(specie.genotype))
+        new_specie = Specie(size=self.size, renderer=self.renderer, genotype=np.array(specie.genotype))
 
         # Randomization for Evolution
         y = random.randint(0, self.genes - 1)
@@ -75,7 +76,7 @@ class Evolution:
         Args:
             fit (float): fitness value of specie.
         """
-        print("GEN {}, FIT {:.8f}".format(self.generation, fit))
+        print(f"\33[2K\rGEN {self.generation}, FIT {fit:.8f}", end="")
 
     def evolve(self, fitness=fitness.MSEFitness, max_generation=100000):
         """Genetic Algorithm for evolution.
